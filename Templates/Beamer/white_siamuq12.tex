@@ -1,0 +1,560 @@
+
+\documentclass{beamer}
+
+\mode<presentation>
+{
+  \usetheme{Warsaw}
+  \usecolortheme{whale}
+  % or ...
+
+  \setbeamercovered{transparent}
+  % or whatever (possibly just delete it)
+  \setbeamertemplate{navigation symbols}{}
+}
+
+
+\usepackage[english]{babel}
+% or whatever
+
+\usepackage[utf8]{inputenc}
+% or whatever
+
+\usepackage{graphicx}
+\graphicspath{{./Figures/}{./png_surrog/}{./png_surrog_seq/}{./png_sol_nul/}}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[autoplay,loop]{animate}
+% or whatever
+
+\usepackage{times}
+\usepackage[T1]{fontenc}
+
+\setbeamertemplate{itemize items}[ball]
+\setbeamertemplate{itemize subitem}[triangle]
+\setbeamertemplate{itemize subsubitem}[circle]
+\setbeamercovered{transparent}
+
+\title[]{Quantifying Simplification-Induced Error Using Subspace Techniques}
+
+\author[White, Hughes] % (optional, use only with lots of authors)
+{J.T.~White J.D.~Hughes }
+\institute[USGS and Watermark Numerical Computing] % (optional, but mostly needed)
+{
+  U.S. Geological Survey\\
+  Tampa, Florida, USA
+  }
+
+\date[UQ12] % (optional, should be abbreviation of conference name)
+{Society of Industrial and Applied Mathematics, Uncertainty Quantification 2012}
+
+\subject{Model Simplfication}
+
+\logo{\vspace{-0.3cm} \includegraphics[width=1.5cm]{USGSid_pc.eps}\hspace*{11.10cm}}  
+
+
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}
+\tableofcontents
+\end{frame}
+
+
+\section{Introduction}
+
+
+\subsection{subspace framework}
+
+
+\begin{frame}{in the beginning....}
+\begin{equation*}
+\textbf{h} = \textbf{Zk} + {\boldsymbol \epsilon}
+\end{equation*}
+\begin{tabular}{ll}
+\textbf{Z}&linear model of "reality"\\ 
+\textbf{k}&parameter vector of "reality"\\
+\textbf{h}&observations\\
+$\boldsymbol{ \epsilon}$&observation error\\
+\end{tabular}
+\end{frame}
+
+\begin{frame}
+\begin{equation*}
+\textbf{Z} = \textbf{USV}^t
+\end{equation*}
+\begin{tabular}{ll}
+%\textbf{Z}&linear model of "reality"\\ 
+\textbf{U}&left singular vectors of \textbf{X} (eigenvectors of $\textbf{XX}^t$)\\
+\textbf{S}&diagonal singular value matrix\\
+\textbf{V}&right singular vectors of \textbf{X}(eigenvectors of $\textbf{X}^t\textbf{X})$
+\end{tabular}
+\end{frame}
+
+\begin{frame}
+\begin{equation*}
+\textbf{Z}^{-} \approx \textbf{V}_1\textbf{S}^{-1}_1\textbf{U}^t_1
+\end{equation*}
+%where  $\textbf{V}_1$, $\textbf{S}^{-1}_1$ and $\textbf{U}^t_1$ 
+where the "1" subscript denotes the portion of the SVD included in the inverse problem
+\begin{itemize}
+\item{The optimal simplification of reality}
+\item{How to chose the truncation point?}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{solution and null spaces}
+\begin{figure}
+\vspace{-0.01cm}{\makebox[\textwidth]{\animategraphics{5}{sn_}{1}{47}}}
+\end{figure}
+\end{frame}
+
+%\section{A Perfect Model : Complex Model}
+\subsection{predictive error variance}
+
+\begin{frame}{In a perfect (model) world}
+\begin{equation*}
+\boldsymbol{\sigma}^{2}_{\hat{s} - s} = 
+\underset{null} {\underbrace{ 
+\mathbf{y}^{t} (\mathbf{I - R})\mathbf{C}(\textbf{p}) (\mathbf{I - R}^{t})\mathbf{y} } } + 
+\underset{solution} {\underbrace{ \mathbf{y}^{t} \mathbf{GC}(\boldsymbol{\epsilon})\mathbf{G}^{t} \mathbf{y} } }
+\end{equation*}
+
+\begin{equation*}
+\textbf{R} = \textbf{V}_1\textbf{V}^t_1
+\end{equation*}
+
+\begin{equation*}
+\textbf{G} = \textbf{V}_1\textbf{S}^{-1}_1\textbf{U}^t_1
+\end{equation*}
+
+\begin{tabular}{ll}
+{$\textbf{y}^t$}&vector of predictive sensitivities wrt parameters\\
+%{\textbf{R}}&parameter resolution matrix\\
+{$\textbf{C}(\textbf{p})$}& parameter covariance matrix\\
+%{\textbf{G}}&parameter solution matrix\\
+{$\textbf{C}(\boldsymbol{\epsilon})$}&observation error covariance matrix\\
+\end{tabular} 
+\end{frame}
+
+\begin{frame}
+\begin{equation*}
+\mathbf{y}^{t} (\mathbf{I - R})\mathbf{C}(\textbf{p}) (\mathbf{I - R}^{t})\mathbf{y}
+\end{equation*}
+\begin{equation*}
+\textbf{R} = \textbf{V}_1\textbf{V}^t_1
+\end{equation*}
+
+\begin{figure}
+\vspace{-0.25cm} \includegraphics[width=2.0in]{pev_1st}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\begin{figure}
+\vspace{-0.01cm}{\makebox[\textwidth]{ \includegraphics{err_var1}}}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+\begin{equation*}
+\textbf{G} = \textbf{V}_1\textbf{S}^{-1}_1\textbf{U}^t_1
+\end{equation*}
+\begin{equation*}
+ \mathbf{y}^{t} \mathbf{GC}(\boldsymbol{\epsilon})\mathbf{G}^{t} \mathbf{y}
+\end{equation*}
+\begin{figure}
+\vspace{-0.25cm} \includegraphics[width=2.0in]{pev_2nd}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\begin{figure}
+\vspace{-0.01cm}{\makebox[\textwidth]{ \includegraphics{err_var2}}}
+\end{figure}
+\end{frame}
+
+
+
+\begin{frame}
+\begin{figure}
+\vspace{-0.25cm} \includegraphics[width=4.0in]{pev}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\begin{figure}
+\vspace{-0.25cm} \includegraphics[width=4.0in]{pevf}
+\end{figure}
+\end{frame}
+
+
+%\begin{frame}{a perfect model : no simplification}
+%\begin{figure}
+%\vspace{-0.25cm} \includegraphics[width=4.0in]{c_2pd_1_blue}
+%\end{figure}
+%\end{frame}
+
+
+
+\section{An Imperfect Model}
+\subsection{what is simplification?} 
+\begin{frame}
+\begin{center}
+what is simplification?
+\end{center}
+\end{frame}
+
+\begin{frame}{in the beginning....}
+\begin{equation*}
+\textbf{h} = \textbf{Zk} + {\boldsymbol \epsilon}
+\end{equation*}
+\begin{itemize}
+\item{\textbf{Z} encapsulates all of the "structure" of the relationship between the observations \textbf{h} and the parameters \textbf{k}}
+\uncover<2->{\item{The model is a (sub-optimal) simplification of reality}}
+\end{itemize}
+\end{frame}
+
+
+
+\subsection{subspace analysis}
+
+\begin{frame}%{solution subspace of reality}
+\begin{figure}
+\begin{center}
+\vspace{0.0cm}{\makebox[\textwidth]{\animategraphics{10}{}{1}{60}}}
+\end{center}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}%{misaligned subspaces}
+\begin{figure}
+\begin{center}
+\vspace{-0.1cm}{\makebox[\textwidth]{\animategraphics{10}{}{60}{100}}}
+\end{center}
+\end{figure}
+\end{frame}
+
+\begin{frame}%{simplification}
+\begin{figure}
+\begin{center}
+\vspace{-0.1cm}{\makebox[\textwidth]{\animategraphics{10}{}{100}{118}}}
+\end{center}
+\end{figure}
+\end{frame}
+
+
+
+\begin{frame}%{parameter surrogacy}
+\begin{figure}
+\begin{center}
+\vspace{-0.1cm}{\makebox[\textwidth]{\animategraphics{10}{}{118}{170}}}
+\end{center}
+\end{figure}
+\end{frame}
+
+
+%\begin{frame}%{projection onto the solution subspace}
+%\begin{figure}
+%\begin{center}
+%\vspace{-0.1cm}{\makebox[\textwidth]{\animategraphics{10}{}{137}{170}}}
+%\end{center}
+%\end{figure}
+%\end{frame}
+
+
+\begin{frame}%{additional null space entrainment}
+\begin{figure}
+\begin{center}
+\vspace{-0.1cm}{\makebox[\textwidth]{\animategraphics{10}{}{170}{229}}}
+\end{center}
+\end{figure}
+\end{frame}
+
+
+
+\begin{frame}{quantifying simplification error}
+How to represent known unknowns?
+%\begin{figure}
+%\vspace{-0.25cm} \includegraphics[width=2.0in]{redblue_pill}
+%\end{figure}
+\end{frame}
+
+
+%\subsection{parameter surrogacy}
+%
+%\begin{frame}{parameter surrogacy}
+%Parameters are informed by data and noise
+%\begin{proof}[]
+%parameters can take on compensating roles to "soak up" structural information
+%\end{proof}
+%\textbf{Is this bad?}\\
+%
+%\begin{tabular}{ll}
+%\textbf{No}&{If null \textbf{or} solution space prediction dependence}\\
+%\textbf{Yes}&{If null \textbf{and} solution   space prediction dependence}
+%\end{tabular}
+%\end{frame}
+
+
+
+\section{Quantification}
+\subsection{derivation}
+
+\begin{frame}{Representing simplification}
+
+Additional parameterization: "structural" parameters\\
+%\begin{itemize}
+%\item{multipliers on "known" quantities}
+%\item{lag multipliers on forcing time series}
+%\item{seasonal multipliers for "constant" parameters}
+%\item{etc...}
+%\end{itemize}
+\textbf{These parameters provide a possible receptacle for model discrepancy}
+\end{frame}
+
+\begin{frame}{partitioning \textbf{Z}}
+With additional parameters included in the analysis, we can partition both \textbf{Z} and \textbf{k}:
+\begin{equation*} 
+{\bf h} =  \left[ \begin{array}{cc}{\bf Z}_i&{\bf Z}_o\end{array}\right]
+		\left[ \begin{array}{c}{\bf k}_i\\{\bf k}_o\end{array}\right]
+		+ {\boldsymbol \epsilon}
+		= {\bf Z}_i\textbf{k}_i + \textbf{Z}_o\textbf{k}_o + {\boldsymbol \epsilon}
+\end{equation*}
+\end{frame}
+
+
+\begin{frame}{a quick substitution}
+Solve for $\textbf{k}_i$
+\begin{equation*}
+\textbf{k}_i = \textbf{V}_1\textbf{S}^{-1}_1\textbf{U}^t_1\textbf{h}
+\end{equation*}
+since the structural parameters are not estimated during the inversion:
+\begin{equation*}
+\hat{\bf{k}} = \left[\begin{array}{cc} \hat{\bf{k}}_i \\ \hat{\bf{k}}_o\end{array}\right] = 
+\left[\begin{array}{cc}\textbf{V}_1\textbf{S}^{-1}_1\textbf{U}^t_1 \\ \textbf{0}\end{array} \right] \textbf{h}
+\end{equation*}
+\end{frame}
+
+\begin{frame}{more equations}
+Predictive error:
+%\begin{equation*}
+%\hat{s} - s = \textbf{y}^t_i\underline{\textbf{k}}_i - \textbf{y}^y\textbf{k}_i - \textbf{y}^t_o\textbf{k}_o
+%\end{equation*}
+\begin{equation*}
+\hat{s} - s = \textbf{y}^t_i\hat{\textbf{k}}_i - (\textbf{y}^t_i\textbf{k}_i + \textbf{y}^t_o\textbf{k}_o)
+\end{equation*}
+
+\begin{tabular}{ll}
+{$\hat{s}$ }&prediction made by the history-matched model\\
+$s$&prediction made by the prior model
+\end{tabular}
+\end{frame}
+
+\begin{frame}{more equations still}
+making substitutions for $\hat{\textbf{k}}_i$
+\begin{equation*} 
+\hat{s} - s =  \textbf{y}^t_i\textbf{V}_1\textbf{V}^t_1\textbf{k}_i + \textbf{y}^t_i\textbf{V}_1\textbf{S}^{-1}_1\textbf{U}^t_1\textbf{x}_o\textbf{k}_o + \textbf{y}^t_i\textbf{V}_1\textbf{S}^{-1}_1\textbf{U}^t_1\boldsymbol{\epsilon}  - \textbf{y}^t_i\textbf{k}_i - \textbf{y}^t_o\textbf{k}_o
+\end{equation*}
+\uncover<2->{Since $\textbf{V}_1\textbf{V}^t_1 + \textbf{V}_2\textbf{V}^t_2 = \textbf{I}$,}
+\uncover<3->{\begin{equation*}
+\hat{s} - s =  \textbf{y}^t_i\textbf{V}_2\textbf{V}^t_2\textbf{k}_i +  \textbf{y}^t_i\textbf{V}_1\textbf{S}^{-1}_1\textbf{U}^t_1\boldsymbol{\epsilon} +
+\textbf{y}^t_i\textbf{V}_1\textbf{S}^{-1}_1\textbf{U}^t_1\textbf{x}_o\textbf{k}_o  - \textbf{y}^t_o\textbf{k}_o
+\end{equation*}}
+\end{frame}
+%\begin{frame}{...}
+%\begin{center}
+%...Left to you...
+%\end{center}
+%\end{frame}
+
+
+\begin{frame}{what does it mean}
+\begin{equation*}
+\hat{s} - s = \uncover<2->{\textbf{y}^t_p\textbf{V}_2\textbf{V}^t_2\textbf{k}_p}  \uncover<3->{+ \textbf{y}^t_p\textbf{V}_1\textbf{S}^{-1}_1\textbf{U}^t_1\boldsymbol{\epsilon}}
+\uncover<4->{ + (\textbf{y}^t_i\textbf{V}_1\textbf{S}^{-1}_1\textbf{U}^t_1\textbf{Z}_o - \textbf{y}^t_o)\textbf{k}_o}
+\end{equation*}
+\begin{itemize}
+\item{\uncover<2->{null space}}
+\item{\uncover<3->{solution space}}
+\item{\uncover<4->{model discrepancy}}
+\end{itemize}
+\end{frame}
+
+
+%\subsection{Implications}
+%\begin{frame}
+%\begin {tabular}{ll}
+%Question:&How does this effect uncertainty quantification?\\
+%Answer:&It depends on the prediction.
+%\end{tabular}
+%\begin{equation*}
+% (\color{red}\textbf{y}^t_i\color{black}\textbf{V}_1\textbf{S}^{-1}_1\textbf{U}^t_1\textbf{Z}_s - \color{red}\textbf{y}^t_o\color{black})\textbf{k}_o
+%\end{equation*}
+%\end{frame}
+
+\subsection{study area}
+
+\begin{frame}{study area}
+\begin{columns}[c]
+\column{2.5in}
+\begin{itemize}
+\item{Miami-Dade County, Florida}
+\item{2.5 million residents}
+\item{intense competition for fresh water}
+\end{itemize}
+\column{2.5in}
+\begin{figure}
+\vspace{-0.25cm} \includegraphics[height=2.25in]{florida}
+\end{figure}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\begin{figure}
+\vspace{0.0cm} \includegraphics[height=3.25in]{studyarea}
+\end{figure}
+\end{frame}
+
+\begin{frame}{problem dimensions}
+\begin{columns}[c]
+\column{2.5in}
+\center \textbf{$Z_i$}\\*
+\begin{equation*}
+\left[ 
+\begin{matrix}
+   1 & \ldots  & {{z}_{1,p}}  \\
+   \vdots  & \ddots  & \vdots   \\
+   {{z}_{n,1}} & \cdots  & {{z}_{n,p}}  \\
+\end{matrix} 
+\right]
+\end{equation*}
+
+\center \textit{n = 23,713}
+\center \textit{p =  5,327}
+
+\column{2.5in}
+
+\center \textbf{$Z_o$}\\*
+\begin{equation*}
+\left[ 
+\begin{matrix}
+   1 & \ldots  & {{z}_{1,p}}  \\
+   \vdots  & \ddots  & \vdots   \\
+   {{z}_{n,1}} & \cdots  & {{z}_{n,p}}  \\
+\end{matrix} 
+\right]
+\end{equation*}
+\center \textit{n = 23,713}
+\center \textit{p =  147}
+
+\end{columns}
+\end{frame}
+
+
+\section{Results and Summary}
+\begin{frame}{wet season}
+\begin{figure}
+\begin{center}
+\vspace{-0.1cm}{\includegraphics[width=4.0in]{c_2pw_1_blue}}
+\end{center}
+\end{figure}
+\end{frame}
+
+\begin{frame}{wet season}
+\begin{figure}
+\begin{center}
+\vspace{-0.1cm}{\includegraphics[width=4.0in]{c_2pw_1}}
+\end{center}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\begin{columns}[c]
+\column{2.5in}
+\begin{figure}
+\vspace{-0.1cm}{\includegraphics[width=2.5in]{c_2pw_1}}
+\end{figure}
+\column{2.5in}
+\begin{figure}
+\vspace{-0.1cm}{\includegraphics[width=2.5in]{nobias}}
+\end{figure}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{dry season}
+\begin{figure}
+\begin{center}
+\vspace{-0.1cm}{\includegraphics[width=4.0in]{c_2pd_1_blue}}
+\end{center}
+\end{figure}
+\end{frame}
+
+\begin{frame}{dry season}
+\begin{figure}
+\begin{center}
+\vspace{-0.1cm}{\includegraphics[width=4.0in]{c_2pd_1}}
+\end{center}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\begin{columns}[c]
+\column{2.5in}
+\begin{figure}
+\vspace{-0.1cm}{\includegraphics[width=2.5in]{c_2pd_1}}
+\end{figure}
+\column{2.5in}
+\begin{figure}
+\vspace{-0.1cm}{\includegraphics[width=2.5in]{bias}}
+\end{figure}
+\end{columns}
+\end{frame}
+
+
+
+%\section*{Summary}
+
+\begin{frame}{summary}
+
+  % Keep the summary *very short*.
+\begin{itemize}
+
+\item{history matching with imperfect models  leads to parameter surrogacy and null space entrainment}
+\item{The error resulting from misalignment is prediction dependent}
+\color{red}\textbf{\item{model conditioning/history-matching is prediction dependent}}
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\begin{columns}[c]
+\column{2.5in}
+\begin{figure}
+\vspace{-0.1cm}{\includegraphics[width=2.5in]{c_2pw_1}}
+\end{figure}
+\column{2.5in}
+\begin{figure}
+\vspace{-0.1cm}{\includegraphics[width=2.5in]{c_2pd_1}}
+\end{figure}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\begin{center}
+?
+\end{center}
+\end{frame}
+
+\end{document}
+
+
