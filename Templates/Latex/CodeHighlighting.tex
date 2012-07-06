@@ -1,0 +1,72 @@
+\documentclass[11pt]{report} 
+\usepackage{palatino} 
+\usepackage{listings} % Gives syntax highlighting for python code. 
+\usepackage{color} % Used for syntax highlighting. 
+\usepackage{textcomp} % Used for syntax highlighting. 
+
+% This gives syntax highlighting in the python environment 
+\renewcommand{\lstlistlistingname}{Code Listings} 
+\renewcommand{\lstlistingname}{Code Listing} 
+\definecolor{gray}{gray}{0.5} 
+\definecolor{key}{rgb}{0,0.5,0} 
+\lstnewenvironment{python}[1][]{ 
+\lstset{ 
+language=python, 
+basicstyle=\ttfamily\small, 
+otherkeywords={1, 2, 3, 4, 5, 6, 7, 8 ,9 , 0, -, =, +, [, ], (, ), \{, \}, :, *, !}, 
+keywordstyle=\color{blue}, 
+stringstyle=\color{red}, 
+showstringspaces=false, 
+emph={class, pass, in, for, while, if, is, elif, else, not, and, or, 
+def, print, exec, break, continue, return}, 
+emphstyle=\color{black}\bfseries, 
+emph={[2]True, False, None, self}, 
+emphstyle=[2]\color{key}, 
+emph={[3]from, import, as}, 
+emphstyle=[3]\color{blue}, 
+upquote=true, 
+morecomment=[s]{"""}{"""}, 
+commentstyle=\color{gray}\slshape, 
+framexleftmargin=1mm, framextopmargin=1mm, frame=shadowbox, 
+rulesepcolor=\color{blue},#1 
+}}{} 
+\begin{document} 
+
+\lstlistoflistings 
+\clearpage 
+
+Code listing \ref{svntoolsource} shows a sample. 
+
+\begin{python}[caption={SvnTool source code},label=svntoolsource] 
+#!/usr/bin/env python 
+#-*- coding: utf-8 -*- 
+
+class MyClass(MyOtherClass): 
+""" 
+Some Docstring 
+""" 
+def _init_(self): 
+fruitbowl = ["pear", "peach", "banana"] 
+for fruit in fruitbowl: 
+print fruit 
+if fruit is "pear": 
+continue 
+elif fruit is "banana": 
+break 
+else: 
+pass 
+if fruitbowl is not None: 
+var = True 
+else: 
+var = False 
+a = 3 
+b = -4 
+string = "one-two" 
+name = "Username: " 
+self.button1.connect(self.button1, 
+SIGNAL('clicked()'), 
+self.login) 
+return 
+\end{python} 
+
+\end{document} 
