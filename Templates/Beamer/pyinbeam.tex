@@ -1,0 +1,117 @@
+
+\documentclass{beamer}
+% \documentclass[handout,xcolor=pdftex,dvipsnames,table]{beamer}
+
+\mode<presentation>
+{
+  \usetheme{Warsaw}
+  \usecolortheme{whale}
+  % or ...
+
+  \setbeamercovered{transparent}
+  % or whatever (possibly just delete it)
+  \setbeamertemplate{navigation symbols}{}
+}
+
+\setbeamertemplate{itemize items}[ball]
+\setbeamertemplate{itemize subitem}[triangle]
+\setbeamertemplate{itemize subsubitem}[circle]
+\setbeamercovered{transparent}
+
+\usepackage{palatino} 
+\usepackage{listings} % Gives syntax highlighting for python code. 
+\usepackage{color} % Used for syntax highlighting. 
+\usepackage{textcomp} % Used for syntax highlighting. 
+
+% This gives syntax highlighting in the python environment 
+\definecolor{gray}{gray}{0.5} 
+\definecolor{key}{rgb}{0,0.5,0} 
+\lstset{
+language=python,
+basicstyle=\ttfamily\tiny, 
+otherkeywords={1, 2, 3, 4, 5, 6, 7, 8 ,9 , 0, -, =, +, [, ], (, ), \{, \}, :, *, !}, 
+keywordstyle=\color{blue}, 
+stringstyle=\color{red},
+showstringspaces=false,
+alsoletter={1234567890},
+otherkeywords={\ , \}, \{},
+keywordstyle=\color{blue},
+emph={access,and,break,class,continue,def,del,elif ,else,%
+except,exec,finally,for,from,global,if,import,in,i s,%
+lambda,not,or,pass,print,raise,return,try,while},
+emphstyle=\color{black}\bfseries,
+emph={[2]True, False, None, self},
+emphstyle=[2]\color{green},
+emph={[3]from, import, as},
+emphstyle=[3]\color{blue},
+upquote=true,
+morecomment=[s]{"""}{"""},
+commentstyle=\color{gray}\slshape,
+emph={[4]1, 2, 3, 4, 5, 6, 7, 8, 9, 0},
+emphstyle=[4]\color{blue},
+literate=*{:}{{\textcolor{blue}:}}{1}%
+{=}{{\textcolor{blue}=}}{1}%
+{-}{{\textcolor{blue}-}}{1}%
+{+}{{\textcolor{blue}+}}{1}%
+{*}{{\textcolor{blue}*}}{1}%
+{!}{{\textcolor{blue}!}}{1}%
+{(}{{\textcolor{blue}(}}{1}%
+{)}{{\textcolor{blue})}}{1}%
+{[}{{\textcolor{blue}[}}{1}%
+{]}{{\textcolor{blue}]}}{1}%
+{<}{{\textcolor{blue}<}}{1}%
+{>}{{\textcolor{blue}>}}{1},%
+numbers=left,
+}
+
+
+
+\begin{document}
+
+
+\begin{frame}[fragile]{Code In Frame}
+Here is some python code.  Note that the [fragile] keyword is required on the begin frame line.  See the following site for additional details: \url{http://robfelty.com/2008/09/22/beamer-fragile-frames}
+\begin{lstlisting}
+class GridNodeIterator(object):
+    def __init__(self, grid):
+        self.index = 0
+        return
+        
+    def __iter__(self):
+        return self
+        
+    def next(self):
+        if self.index == self.nodes - 1:
+            raise StopIteration()
+        nodeobj = self.get_nodeobj(self.index)
+        self.index += 1
+        return nodeobj$
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}{Code In Figure In Frame}
+Here is some python code.  In this case, the code was taken out of a python source file.
+  \begin{figure}
+  \centering
+        \lstset{numbers=none}
+        \lstinputlisting[language=python, firstline=9,lastline=20]{pyinbeam.py}
+   \end{figure}
+
+\end{frame}
+
+\begin{frame}{Code In Figure In Frame}
+Here is some python code.  In this case, the code was taken out of a python source file.
+  \begin{figure}
+  \centering
+        \lstset{numbers=none}
+        \lstinputlisting[language=python, firstline=21,lastline=43]{pyinbeam.py}
+   \end{figure}
+
+\end{frame}
+
+
+
+\end{document}
+
+
