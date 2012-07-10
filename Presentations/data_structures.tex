@@ -1,0 +1,322 @@
+
+\documentclass{beamer}
+% \documentclass[handout,xcolor=pdftex,dvipsnames,table]{beamer}
+
+\mode<presentation>
+{
+  \usetheme{Warsaw}
+  \usecolortheme{whale}
+  % or ...
+
+  \setbeamercovered{transparent}
+  % or whatever (possibly just delete it)
+  \setbeamertemplate{navigation symbols}{}
+}
+
+\setbeamertemplate{itemize items}[ball]
+\setbeamertemplate{itemize subitem}[triangle]
+\setbeamertemplate{itemize subsubitem}[circle]
+\setbeamercovered{transparent}
+
+\usepackage{palatino} 
+\usepackage{listings} % Gives syntax highlighting for python code. 
+\usepackage{color} % Used for syntax highlighting. 
+\usepackage{textcomp} % Used for syntax highlighting. 
+
+% This gives syntax highlighting in the python environment 
+\definecolor{gray}{gray}{0.5} 
+\definecolor{key}{rgb}{0,0.5,0} 
+\lstset{
+language=python,
+basicstyle=\ttfamily\tiny, 
+otherkeywords={1, 2, 3, 4, 5, 6, 7, 8 ,9 , 0, -, =, +, [, ], (, ), \{, \}, :, *, !}, 
+keywordstyle=\color{blue}, 
+stringstyle=\color{red},
+showstringspaces=false,
+alsoletter={1234567890},
+otherkeywords={\ , \}, \{},
+keywordstyle=\color{blue},
+emph={access,and,break,class,continue,def,del,elif ,else,%
+except,exec,finally,for,from,global,if,import,in,is,%
+lambda,not,or,pass,print,raise,return,try,while},
+emphstyle=\color{black}\bfseries,
+emph={[2]True, False, None, self},
+emphstyle=[2]\color{green},
+emph={[3]from, import, as},
+emphstyle=[3]\color{blue},
+upquote=true,
+morecomment=[s]{"""}{"""},
+commentstyle=\color{gray}\slshape,
+emph={[4]1, 2, 3, 4, 5, 6, 7, 8, 9, 0},
+emphstyle=[4]\color{blue},
+literate=*{:}{{\textcolor{blue}:}}{1}%
+{=}{{\textcolor{blue}=}}{1}%
+{-}{{\textcolor{blue}-}}{1}%
+{+}{{\textcolor{blue}+}}{1}%
+{*}{{\textcolor{blue}*}}{1}%
+{!}{{\textcolor{blue}!}}{1}%
+{(}{{\textcolor{blue}(}}{1}%
+{)}{{\textcolor{blue})}}{1}%
+{[}{{\textcolor{blue}[}}{1}%
+{]}{{\textcolor{blue}]}}{1}%
+{<}{{\textcolor{blue}<}}{1}%
+{>}{{\textcolor{blue}>}}{1},%
+numbers=none,
+}
+
+\title[]{Python Workshop\\
+Built-In Data Structures}
+
+\author[Langevin] % (optional, use only with lots of authors)
+{C.D.~Langevin}
+\institute[USGS] % (optional, but mostly needed)
+{
+  U.S. Geological Survey\\
+  Reston, Virginia, USA
+  }
+
+\date[UQ12] % (optional, should be abbreviation of conference name)
+{USGS National Groundwater Workshop, August 2012}
+
+\subject{Python}
+
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Outline}
+\tableofcontents
+\end{frame}
+
+\section{Concepts}
+\begin{frame}[fragile]{Concepts}
+\begin{itemize}
+\item{Data Structure -- A way to store and organize data in a computer}
+\item{Mutability -- An \emph{immutable} object is one whose property or state cannot be changed.  Whereas, \emph{mutable} objects can change state.}
+\end{itemize}
+\end{frame}
+
+
+\section{Data Structures}
+
+\subsection{Numbers}
+
+\begin{frame}[fragile]{Numbers}
+\begin{columns}[c]
+\column{2.5in}
+\begin{itemize}
+\item{integer (int)}
+\item{float/double precision (float)}
+\item{long integer (long)}
+\item{complex (complex)}
+\end{itemize}
+
+\column{2.5in}
+\begin{lstlisting}
+In [2]: type(2)
+Out[2]: <type 'int'>
+
+In [3]: type(2.0)
+Out[3]: <type 'float'>
+
+In [4]: type(2**100)
+Out[4]: <type 'long'>
+
+In [5]: type(2j)
+Out[5]: <type 'complex'>
+\end{lstlisting}
+\end{columns}
+\end{frame}
+
+
+\subsection{Strings}
+
+\begin{frame}[fragile]{Strings}
+\begin{columns}[c]
+\column{2.5in}
+\begin{itemize}
+\item{An immutable sequence of characters.}
+\end{itemize}
+
+\column{2.5in}
+\tiny
+\begin{lstlisting}
+In [69]: s = 'modflow'
+
+In [70]: s.upper()
+Out[70]: 'MODFLOW'
+
+In [71]: s.capitalize()
+Out[71]: 'Modflow'
+
+In [72]: s[0]
+Out[72]: 'm'
+
+In [73]: s[-1]
+Out[73]: 'w'
+
+In [74]: s[0:4]
+Out[74]: 'modf'
+
+In [75]: len(s)
+Out[75]: 7
+
+In [76]: 'Modflow' + '-88'
+Out[76]: 'Modflow-88'
+\end{lstlisting}
+\end{columns}
+\end{frame}
+
+
+\subsection{Lists}
+\begin{frame}[fragile]{Lists}
+\begin{columns}[c]
+\column{2.5in}
+\begin{itemize}
+\item{A mutable collection of objects.}
+\item{List members are accessed using a zero-based indexing scheme.}
+\end{itemize}
+
+\column{2.5in}
+\tiny
+\begin{lstlisting}
+In [79]: l = []
+
+In [80]: l.append('first')
+
+In [81]: l.append(2)
+
+In [82]: l.append(3.0)
+
+In [83]: l
+Out[83]: ['first', 2, 3.0]
+
+In [84]: l[0]
+Out[84]: 'first'
+
+In [85]: l[1]
+Out[85]: 2
+
+In [86]: l[2]
+Out[86]: 3.0
+
+In [87]: len(l)
+Out[87]: 3
+\end{lstlisting}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{List Methods}
+\begin{columns}[c]
+\column{2.5in}
+\begin{itemize}
+\item{append}
+\item{count}
+\item{extend}
+\item{index}
+\item{insert}
+\item{pop}
+\item{remove}
+\item{reverse}
+\item{sort}
+\end{itemize}
+
+\column{2.5in}
+\begin{lstlisting}
+In [115]: l
+Out[115]: ['mf.dis', 'mf.bas', 'mf.pcg', 'mf.lpf']
+
+In [116]: l = ['mf.dis', 'mf.bas', 'mf.lpf', 'mf.pcg']
+
+In [117]: l.index('mf.bas')
+Out[117]: 1
+
+In [118]: l.remove('mf.pcg')
+
+In [119]: l.append('mf.sip')
+
+In [120]: l
+Out[120]: ['mf.dis', 'mf.bas', 'mf.lpf', 'mf.sip']
+\end{lstlisting}
+\end{columns}
+\end{frame}
+
+\subsection{Dictionaries}
+\begin{frame}[fragile]{Dictionaries}
+\end{frame}
+
+\subsection{Tuples}
+\begin{frame}[fragile]{Tuples}
+\end{frame}
+
+\subsection{Others}
+\begin{frame}[fragile]{Others}
+Sets\\
+Boolean\\
+None
+\end{frame}
+
+\subsection{Shared References}
+\begin{frame}[fragile]{Shared References}
+\begin{itemize}
+\item{In-Place Changes}
+\item{Shared References and Equality}
+\end{itemize}
+\tiny{See pages 116-121 in Learning Python, Third Edition}
+\end{frame}
+
+\subsection{Zip}
+\begin{frame}[fragile]{Zip}
+\begin{itemize}
+\item{What is Zip?}
+\end{itemize}
+\end{frame}
+
+\section{Numpy Arrays}
+\begin{frame}[fragile]{What is Numpy}
+\end{frame}
+
+\begin{frame}[fragile]{Creating an Array}
+\end{frame}
+
+\begin{frame}[fragile]{Working with Arrays}
+\end{frame}
+
+\section{Summary}
+\begin{frame}[fragile]{Summary}
+\end{frame}
+
+
+
+
+\section{Embedding Code}
+\begin{frame}[fragile]{Code In Frame}
+Here is some python code.  Note that the [fragile] keyword is required on the begin frame line.  See the following site for additional details: \url{http://robfelty.com/2008/09/22/beamer-fragile-frames}
+\begin{lstlisting}
+class GridNodeIterator(object):
+    def __init__(self, grid):
+        self.index = 0
+        return
+        
+    def __iter__(self):
+        return self
+        
+    def next(self):
+        if self.index == self.nodes - 1:
+            raise StopIteration()
+        nodeobj = self.get_nodeobj(self.index)
+        self.index += 1
+        return nodeobj$
+\end{lstlisting}
+\end{frame}
+
+
+
+
+
+\end{document}
+
+
