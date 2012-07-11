@@ -91,16 +91,26 @@ Built-In Data Structures}
 \tableofcontents
 \end{frame}
 
-\section{Concepts}
+\section{Introduction}
 \begin{frame}[fragile]{Concepts}
 \begin{itemize}
 \item{Data Structure -- A way to store and organize data in a computer}
-\item{Mutability -- An \emph{immutable} object is one whose property or state cannot be changed.  Whereas, \emph{mutable} objects can change state.}
+\item{Mutability -- An \emph{immutable} object is one whose property or state cannot be changed, whereas, \emph{mutable} objects can change state}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Object Terminology}
+Everything is an object in Python
+\begin{itemize}
+\item{Object -- An instance of a data structure}
+\item{Function -- Works on an object that is passed into it\\ e.g. run(model)}
+\item{Method -- A set of instructions that works on itself\\ e.g. model.run()}
+\item{Member -- A piece of information comprising an object\\ e.g. model.nlay}
 \end{itemize}
 \end{frame}
 
 
-\section{Data Structures}
+\section{Built-In Data Structures}
 
 \subsection{Numbers}
 
@@ -138,7 +148,9 @@ Out[5]: <type 'complex'>
 \begin{columns}[c]
 \column{2.5in}
 \begin{itemize}
-\item{An immutable sequence of characters.}
+\item{type 'str'}
+\item{An immutable sequence of characters}
+\item{Individual characters are accessed using zero-based indexing}
 \end{itemize}
 
 \column{2.5in}
@@ -176,8 +188,9 @@ Out[76]: 'Modflow-88'
 \begin{columns}[c]
 \column{2.5in}
 \begin{itemize}
-\item{A mutable collection of objects.}
-\item{List members are accessed using a zero-based indexing scheme.}
+\item{A mutable collection of objects}
+\item{List members are accessed using a zero-based indexing scheme}
+\item{A list can contain different types}
 \end{itemize}
 
 \column{2.5in}
@@ -246,6 +259,44 @@ Out[120]: ['mf.dis', 'mf.bas', 'mf.lpf', 'mf.sip']
 
 \subsection{Dictionaries}
 \begin{frame}[fragile]{Dictionaries}
+\begin{columns}[c]
+\column{2.5in}
+\begin{itemize}
+\item{type 'dict'}
+\item{A mutable collection of keys and values where d[key] = value}
+\item{Useful for quickly looking up a value based on a key}
+\item{Keys must be immutable}
+\end{itemize}
+
+\column{2.5in}
+\tiny
+\begin{lstlisting}
+In [21]: d = {}
+
+In [22]: d[1] = 'January'
+
+In [23]: d[2] = 'February'
+
+...
+
+In [33]: d[12] = 'December'
+
+In [34]: d
+Out[34]:
+{1: 'January',
+ 2: 'February',
+ 3: 'March',
+ 4: 'April',
+ 5: 'May',
+ 6: 'June',
+ 7: 'July',
+ 8: 'August',
+ 9: 'September',
+ 10: 'October',
+ 11: 'November',
+ 12: 'December'}
+\end{lstlisting}
+\end{columns}
 \end{frame}
 
 \subsection{Tuples}
@@ -259,6 +310,7 @@ Boolean\\
 None
 \end{frame}
 
+\section{Working with Data Structures}
 \subsection{Shared References}
 \begin{frame}[fragile]{Shared References}
 \begin{itemize}
@@ -275,46 +327,9 @@ None
 \end{itemize}
 \end{frame}
 
-\section{Numpy Arrays}
-\begin{frame}[fragile]{What is Numpy}
-\end{frame}
-
-\begin{frame}[fragile]{Creating an Array}
-\end{frame}
-
-\begin{frame}[fragile]{Working with Arrays}
-\end{frame}
-
 \section{Summary}
 \begin{frame}[fragile]{Summary}
 \end{frame}
-
-
-
-
-\section{Embedding Code}
-\begin{frame}[fragile]{Code In Frame}
-Here is some python code.  Note that the [fragile] keyword is required on the begin frame line.  See the following site for additional details: \url{http://robfelty.com/2008/09/22/beamer-fragile-frames}
-\begin{lstlisting}
-class GridNodeIterator(object):
-    def __init__(self, grid):
-        self.index = 0
-        return
-        
-    def __iter__(self):
-        return self
-        
-    def next(self):
-        if self.index == self.nodes - 1:
-            raise StopIteration()
-        nodeobj = self.get_nodeobj(self.index)
-        self.index += 1
-        return nodeobj$
-\end{lstlisting}
-\end{frame}
-
-
-
 
 
 \end{document}
