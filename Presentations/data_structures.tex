@@ -18,6 +18,10 @@
 \setbeamertemplate{itemize subsubitem}[circle]
 \setbeamercovered{transparent}
 
+%alternative fonts that provide a nice look
+%\usepackage[T1]{fontenc}
+%\usepackage{lmodern}
+
 \usepackage{palatino} 
 \usepackage{listings} % Gives syntax highlighting for python code. 
 \usepackage{color} % Used for syntax highlighting. 
@@ -103,9 +107,9 @@ Built-In Data Structures}
 Everything is an object in Python
 \begin{itemize}
 \item{Object -- An instance of a data structure}
-\item{Function -- Works on an object that is passed into it\\ e.g. run(model)}
-\item{Method -- A set of instructions that works on itself\\ e.g. model.run()}
-\item{Member -- A piece of information comprising an object\\ e.g. model.nlay}
+\item{Function -- Works on an object that is passed into it\\ e.g. {\color{blue}run(model)}}
+\item{Method -- A set of instructions that works on itself\\ e.g. {\color{blue}model.run()}}
+\item{Member -- A piece of information, such as an integer, that is part of an object\\ e.g. {\color{blue}model.nlay}}
 \end{itemize}
 \end{frame}
 
@@ -257,6 +261,45 @@ Out[120]: ['mf.dis', 'mf.bas', 'mf.lpf', 'mf.sip']
 \end{columns}
 \end{frame}
 
+\subsection{Tuples}
+\begin{frame}[fragile]{Tuples}
+\begin{columns}[c]
+\column{2.5in}
+\begin{itemize}
+\item{type 'tuple'}
+\item{An immutable collection of objects}
+\item{Tuple members are accessed using a zero-based indexing scheme}
+\item{A tuple can contain different types}
+\end{itemize}
+
+\column{2.5in}
+\tiny
+\begin{lstlisting}
+In [1]: point1 = (0, 10, 0)
+
+In [2]: point2 = (10, 0, 0)
+
+In [3]: point3 = (0, 0, 0)
+
+In [4]: triangle = (point1, point2, point3)
+
+In [5]: type(triangle)
+Out[5]: <type 'tuple'>
+
+In [6]: triangle[0]
+Out[6]: (0, 10, 0)
+
+In [7]: triangle[-1]
+Out[7]: (0, 0, 0)
+
+In [8]: point1 = (-1, -1, -1)
+
+In [9]: triangle
+Out[9]: ((0, 10, 0), (10, 0, 0), (0, 0, 0))
+\end{lstlisting}
+\end{columns}
+\end{frame}
+
 \subsection{Dictionaries}
 \begin{frame}[fragile]{Dictionaries}
 \begin{columns}[c]
@@ -266,6 +309,7 @@ Out[120]: ['mf.dis', 'mf.bas', 'mf.lpf', 'mf.sip']
 \item{A mutable collection of keys and values where d[key] = value}
 \item{Useful for quickly looking up a value based on a key}
 \item{Keys must be immutable}
+\item{There is no guarantee that the order of the dictionary will be the same as the creation order}
 \end{itemize}
 
 \column{2.5in}
@@ -299,9 +343,86 @@ Out[34]:
 \end{columns}
 \end{frame}
 
-\subsection{Tuples}
-\begin{frame}[fragile]{Tuples}
+
+\begin{frame}[fragile]{Accessing Dictionary Keys}
+\begin{columns}[c]
+\column{2.5in}
+\begin{itemize}
+\item{A value can be looked up in the dictionary by referencing d[key]}
+\end{itemize}
+
+\column{2.5in}
+\begin{lstlisting}
+In [59]: d[1]
+Out[59]: 'January'
+
+In [60]: d[12]
+Out[60]: 'December'
+
+In [61]: s = 'It is the month of ' + d[8]
+
+In [62]: s
+Out[62]: 'It is the month of August'
+
+In [63]: l = d.keys()
+
+In [64]: l
+Out[64]: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+\end{lstlisting}
+\end{columns}
 \end{frame}
+
+
+\begin{frame}[fragile]{Key Types}
+\begin{columns}[c]
+\column{2.5in}
+\begin{itemize}
+\item{Keep in mind that all types cannot be keys}
+\end{itemize}
+
+\column{2.5in}
+\begin{lstlisting}
+In [73]: d = { (1,1,1):'cell 1', (2,1,1):'cell 2' }
+
+In [74]: s = 'this is cell: ' + d[(2,1,1)]
+
+In [75]: s
+Out[75]: 'this is cell: cell 2'
+
+In [76]: d = { [1,1,1]:'cell 1', (2,1,1):'cell 2' }
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+
+TypeError: unhashable type: 'list'
+
+\end{lstlisting}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}[fragile]{Iterating through a Dictionary}
+\begin{columns}[c]
+\column{2.5in}
+\begin{itemize}
+\item{It is possible to iterate through all the key:value pairs in a dictionary}
+\end{itemize}
+
+\column{2.5in}
+\begin{lstlisting}
+In [89]: for k, v in d.iteritems():
+   ....:     print 'key: ', k
+   ....:     print 'value: ',v
+   ....:
+   ....:
+key:  (1, 1, 1)
+value:  cell 1
+key:  (2, 1, 1)
+value:  cell 2
+\end{lstlisting}
+\end{columns}
+\end{frame}
+
+
 
 \subsection{Others}
 \begin{frame}[fragile]{Others}
