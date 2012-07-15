@@ -1,3 +1,0 @@
-\beamer@endinputifotherversion {3.07pt}
-\beamer@sectionintoc {1}{Preliminaries}{3}{0}{1}
-\beamer@sectionintoc {2}{Getting Help}{5}{0}{2}
