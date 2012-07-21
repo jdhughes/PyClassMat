@@ -68,7 +68,7 @@ numbers=none,
 
 
 \title[]{Python Workshop\\
-Accessing the Web}
+File Input/Output}
 
 \author[Fienen] % (optional, use only with lots of authors)
 {Mike~Fienen}
@@ -99,7 +99,11 @@ Accessing the Web}
 
 \begin{frame}[fragile]
 \frametitle{Overview}
-We are building a model and we want to include the water elevations in a few wells that are part of NWIS in our calibration data. We need to fetch the data, make plots of the results, and format the observations section of a PEST control file.
+\begin{itemize}
+
+\item Much of what is useful to do in Python is reading files, manipulating the data, and writing out results in another format
+\item Python and Numpy provide ways to read and write ASCII and binary files. We will focus on ASCII files
+\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -109,16 +113,32 @@ We are building a model and we want to include the water elevations in a few wel
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Sample Code}
+\frametitle{\texttt{np.genfromtxt}: flexible way to read columns}
+Example file: STATE\_FIPS.csv \\
+\texttt{State Abbreviation,FIPS Code,State Name} \\
+\texttt{AK,02,ALASKA} \\
+\texttt{AL,01,ALABAMA}  \\
+\pause
 \begin{lstlisting}
 import numpy as np
-from datetime import datetime
-mpl.rcParams['pdf.fonttype'] = 42 # this strange bit of code makes fonts 
-                                  # editable in Adobe Illustator
-import matplotlib.pyplot as plt
-import time
-import re
+infilename = 'STATE_FIPS.csv'
+indat = np.genfromtxt(infilename,delimiter=',',dtype=None,names=True)
 \end{lstlisting}
+\pause
+\begin{description}
+\item[\texttt{delimiter=','}] delimiter can be \emph{anything}
+\item[\texttt{dtype=None}] Numpy interprets column data types. If unknown, makes it a string
+\item[\texttt{names=True}] Each column gets a data type and a name
+\end{description}
+\pause
+\begin{lstlisting}
+In [10]: indat
+Out[7]: 
+array([('AK', 2, 'ALASKA'), ('AL', 1, 'ALABAMA'), ('AR', 5, 'ARKANSAS'), ... 
+dtype=[('State_Abbreviation', '|S2'), ('FIPS_Code', '<i4'), ('State_Name', '|S20')])
+\end{lstlisting}
+\pause
+\hskip 1.5 cm \emph{N.B.$\rightarrow$underscore replaces space in names}
 \end{frame}
 
 
