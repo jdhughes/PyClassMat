@@ -3,9 +3,138 @@ from datetime import datetime
 import matplotlib as mpl
 mpl.rcParams['pdf.fonttype'] = 42 # this strange bit of code makes fonts 
                                   # editable in Adobe Illustator
-import matplotlib.pyplot as plt
-import re
-import os
+import matplotlib.pyplot as plt   # a violation of namespace kung fu, but a common one
+import re                         # regular experessions module
+import os                         # operating system module
+
+
+# Function to make a lookup of State and County FIPS codes
+def read_state_county_FIPS():
+    '''
+    read_state_county_FIPS()
+    A function to read FIPS files for lookup and return two kinds of output.
+    Mike Fienen - 7/16/2012
+    <mnfienen *at* usgs *dot* gov>
+    
+    INPUT:
+    none --> the variables are all already named
+    
+    OUTPUT:
+    state_lookup_full -->  dictionary with keys of full state names 
+                    and elements of state codes
+    state_lookup_abbrev --> dictionary with keys of state name 
+                    abbreviations and elements of state codes
+    county_lookup --> a 3 column numpy array of strings with county codes,
+                    state codes, and county names
+    '''
+    # filenames for the State and County lookups
+    state_file = os.path.join('..','NWIS_meta_data','STATE_FIPS.csv')
+    county_file = os.path.join('..','NWIS_meta_data','COUNTY_FIPS.csv')
+    #
+    # read in the county file --> READ THE "HARD WAY"
+    #
+    # make lists to hold the data we will read
+    state_codes = []
+    county_codes = []
+    county_names = []
+    
+    indat = open(county_file,'r').readlines()  # read the whole file into memory as a list
+    headers = indat.pop(0)                     # remove the 0th line and put into headers
+    for line in indat:                         # go through the remaining file line by line
+        tmp = line.strip().split(',')          # remove newline chars and split on ','
+        state_codes.append(tmp[1])             # leave as strings to keep zero padding
+        county_codes.append(tmp[2])
+        county_names.append(tmp[3].lower())    # leave the names as strings but !make lower case!
+    # convert the lists to numpy arrays--usefule later to enable using np.nonzero
+    state_codes = np.atleast_1d(state_codes)
+    county_codes = np.atleast_1d(county_codes)
+    county_names = np.atleast_1d(county_names)
+        
+    # now mash them up into one numpy array
+    county_lookup = np.hstack((state_codes,county_codes,county_names))
+    # reshape it to be columns again and transpose the results (.T)
+    county_lookup = county_lookup.reshape(3,len(county_lookup)/3).T
+    
+    #
+    # read in the state file --> USES NP.GENFROMTXT
+    #
+    state_vals = np.genfromtxt(state_file,dtype=None,names=True,delimiter=',')
+    # force the state names and abbreviations to lower case for later comparisons
+    fullnames = state_vals['State_Name']
+    for i in np.arange(len(fullnames)):
+        fullnames[i] = fullnames[i].lower()
+    abbrevnames = state_vals['State_Abbreviation']
+    for i in np.arange(len(abbrevnames)):
+        abbrevnames[i] = abbrevnames[i].lower()
+    # now make the output lookup dictionaries to return
+    state_lookup_full = dict(zip(fullnames,
+                                 state_vals['FIPS_Code']))
+    state_lookup_abbrev = dict(zip(abbrevnames,
+                                   state_vals['FIPS_Code']))
+    return state_lookup_full,state_lookup_abbrev,county_lookup
+
+def get_county_and_state_FIPS(cState,cCounty,state_lookup_full,
+                              state_lookup_abbrev,county_lookup):
+    '''
+    get_county_and_state_FIPS(cState,cCounty,state_lookup_full,
+                              state_lookup_abbrev,county_lookup)
+    A function to lookup a state and county set of FIPS codes using 
+    string representations of the states and counties, or optionally
+    a FIPS for state and string for county. 
+    N.B.--> some of the counties are actually, parishes, etc., so some further
+                        QC may be in order!
+    Mike Fienen - 7/16/2012
+    <mnfienen *at* usgs *dot* gov>
+    
+    INPUT:
+    cState --> state to lookup, can be FIPS code, full name, or 2 letter abbrev.
+    cCounty --> County name (due to note above, must include descriptor such as "county" etc.
+    state_lookup_full -->  dictionary with keys of full state names 
+                    and elements of state codes
+    state_lookup_abbrev --> dictionary with keys of state name 
+                    abbreviations and elements of state codes
+    county_lookup --> a 3 column numpy array of strings with county codes,
+                    state codes, and county names
+    OUTPUT:
+    cFIPS --> Dictionary with keys of "state" and "county" and elements with the FIPS codes
+    '''
+    #
+    # first be flexible about how to handle the state code ambiguity
+    #
+    try:  # is it in integer?
+        state_FIPS = int(cState)
+    except: # if not, see, by length, if it's an abbreviation or full name
+        cState = cState.lower()  # force to lower case
+        lenstate = len(cState)
+        if lenstate == 2:
+            try:
+                state_FIPS = state_lookup_abbrev[cState]
+            except KeyError:
+                raise KeyError('State not found')
+        else:
+            try:
+                state_FIPS = state_lookup_full[cState]
+            except KeyError:
+                raise KeyError( 'State not found')
+    state_FIPS = str(state_FIPS).zfill(2) # convert back to a string padded with zeros on the left
+    #
+    # next, find a match in county_lookup for both state FIPS code and county name
+    # returning the county FIPS code
+    #
+    try: # is it already an integer?
+        county_FIPS = int(cCounty)
+    except: # if not, use the string to look up
+        cCounty = cCounty.lower()  # first force to lower case for the comparison        
+        # now, find the indices within county_lookup that match both county name and state FIPS code
+        indies = (np.where(county_lookup[:,0]==state_FIPS) and np.where(county_lookup[:,2]==cCounty))[0]
+        if len(indies)>1:
+            print "ambiguous county and state match"
+        else:
+            county_FIPS = county_lookup[indies,1][0]
+    county_FIPS=str(county_FIPS).zfill(3) # convert back to string and pad with zeros on left
+    return state_FIPS,county_FIPS
+        
+        
 
 def NWIS_reader(infile):
     '''
