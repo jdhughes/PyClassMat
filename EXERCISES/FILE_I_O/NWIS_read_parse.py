@@ -71,7 +71,8 @@ def read_state_county_FIPS():
                                  state_vals['FIPS_Code']))
     state_lookup_abbrev = dict(zip(abbrevnames,
                                    state_vals['FIPS_Code']))
-    return state_lookup_full,state_lookup_abbrev,county_lookup
+    state_abbrev_full = dict(zip(fullnames,abbrevnames))
+    return state_lookup_full,state_lookup_abbrev,county_lookup,state_abbrev_full
 
 def get_county_and_state_FIPS(cState,cCounty,state_lookup_full,
                               state_lookup_abbrev,county_lookup):

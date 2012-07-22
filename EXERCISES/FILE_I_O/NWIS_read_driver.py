@@ -6,7 +6,7 @@ import NWIS_read_parse as NWR
 a,b,c = NWR.read_state_county_FIPS()
 
 # now find the specific code for place of interst
-cS = 'sdkljfh'
+cS = 'WI'
 cC = 'Dane County'
 sF,cF = NWR.get_county_and_state_FIPS(cS,cC,a,b,c)
 
