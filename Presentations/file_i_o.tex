@@ -1,0 +1,145 @@
+\documentclass{beamer}
+% \documentclass[handout,xcolor=pdftex,dvipsnames,table]{beamer}
+
+\mode<presentation>
+{
+  \usetheme{Warsaw}
+  \usecolortheme{whale}
+  % or ...
+
+  % or whatever (possibly just delete it)
+  \setbeamertemplate{navigation symbols}{}
+}
+
+\setbeamertemplate{itemize items}[ball]
+\setbeamertemplate{itemize subitem}[triangle]
+\setbeamertemplate{itemize subsubitem}[circle]
+\setbeamercovered{invisible}
+
+\usepackage{palatino} 
+\usepackage{listings} % Gives syntax highlighting for python code. 
+\usepackage{color} % Used for syntax highlighting. 
+\usepackage{textcomp} % Used for syntax highlighting. 
+\usepackage{caption}
+\captionsetup{labelformat=empty,labelsep=none}
+% This gives syntax highlighting in the python environment 
+\definecolor{gray}{gray}{0.5} 
+\definecolor{key}{rgb}{0,0.5,0} 
+\lstset{
+language=python,
+basicstyle=\ttfamily\tiny, 
+otherkeywords={1, 2, 3, 4, 5, 6, 7, 8 ,9 , 0, -, =, +, [, ], (, ), \{, \}, :, *, !}, 
+keywordstyle=\color{blue}, 
+stringstyle=\color{red},
+showstringspaces=false,
+alsoletter={1234567890},
+otherkeywords={\ , \}, \{},
+keywordstyle=\color{blue},
+emph={access,and,break,class,continue,def,del,elif ,else,%
+except,exec,finally,for,from,global,if,import,in,is,%
+lambda,not,or,pass,print,raise,return,try,while},
+emphstyle=\color{black}\bfseries,
+emph={[2]True, False, None, self},
+emphstyle=[2]\color{green},
+emph={[3]from, import, as},
+emphstyle=[3]\color{blue},
+upquote=true,
+morecomment=[s]{"""}{"""},
+commentstyle=\color{gray}\slshape,
+emph={[4]1, 2, 3, 4, 5, 6, 7, 8, 9, 0},
+emphstyle=[4]\color{blue},
+literate=*{:}{{\textcolor{blue}:}}{1}%
+{=}{{\textcolor{blue}=}}{1}%
+{-}{{\textcolor{blue}-}}{1}%
+{+}{{\textcolor{blue}+}}{1}%
+{*}{{\textcolor{blue}*}}{1}%
+{!}{{\textcolor{blue}!}}{1}%
+{(}{{\textcolor{blue}(}}{1}%
+{)}{{\textcolor{blue})}}{1}%
+{[}{{\textcolor{blue}[}}{1}%
+{]}{{\textcolor{blue}]}}{1}%
+{<}{{\textcolor{blue}<}}{1}%
+{>}{{\textcolor{blue}>}}{1},%
+numbers=none,
+}
+
+\newcommand{\putat}[3]{\begin{picture}(0,0)(0,0)\put(#1,#2){#3}\end{picture}}
+
+
+
+\title[]{Python Workshop\\
+File Input/Output}
+
+\author[Fienen] % (optional, use only with lots of authors)
+{Mike~Fienen}
+\institute[USGS] % (optional, but mostly needed)
+{
+  U.S. Geological Survey\\
+  Wisconsin Water Science Center, Middleton, Wisconsin USA
+  }
+  \titlegraphic{\includegraphics[scale=0.5]{figures/c_USGSid1.pdf}}
+  
+
+\date[UQ12] % (optional, should be abbreviation of conference name)
+{USGS National Groundwater Workshop, August 2012}
+
+\subject{Python}
+
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+\logo{\vspace{-0.3cm} \includegraphics[width=1.5cm]{figures/c_USGSid1.pdf}\hspace*{11.10cm}}  
+
+\begin{frame}{Outline}
+\tableofcontents
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Overview}
+\begin{itemize}
+
+\item Much of what is useful to do in Python is reading files, manipulating the data, and writing out results in another format
+\item Python and Numpy provide ways to read and write ASCII and binary files. We will focus on ASCII files
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Background Information}
+\url{http://waterservices.usgs.gov/}
+\url{http://nwis.waterdata.usgs.gov/nwis/pmcodes/}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{\texttt{np.genfromtxt}: flexible way to read columns}
+Example file: STATE\_FIPS.csv \\
+\texttt{State Abbreviation,FIPS Code,State Name} \\
+\texttt{AK,02,ALASKA} \\
+\texttt{AL,01,ALABAMA}  \\
+\pause
+\begin{lstlisting}
+import numpy as np
+infilename = 'STATE_FIPS.csv'
+indat = np.genfromtxt(infilename,delimiter=',',dtype=None,names=True)
+\end{lstlisting}
+\pause
+\begin{description}
+\item[\texttt{delimiter=','}] delimiter can be \emph{anything}
+\item[\texttt{dtype=None}] Numpy interprets column data types. If unknown, makes it a string
+\item[\texttt{names=True}] Each column gets a data type and a name
+\end{description}
+\pause
+\begin{lstlisting}
+In [10]: indat
+Out[7]: 
+array([('AK', 2, 'ALASKA'), ('AL', 1, 'ALABAMA'), ('AR', 5, 'ARKANSAS'), ... 
+dtype=[('State_Abbreviation', '|S2'), ('FIPS_Code', '<i4'), ('State_Name', '|S20')])
+\end{lstlisting}
+\pause
+\hskip 1.5 cm \emph{N.B.$\rightarrow$underscore replaces space in names}
+\end{frame}
+
+
+\end{document}
