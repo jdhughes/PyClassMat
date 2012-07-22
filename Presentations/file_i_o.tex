@@ -11,6 +11,12 @@
   \setbeamertemplate{navigation symbols}{}
 }
 
+
+% make a command to decrease font size locally when desired
+\newcommand\Fontvi{\fontsize{8.5}{7.2}\selectfont}
+
+
+
 \setbeamertemplate{itemize items}[ball]
 \setbeamertemplate{itemize subitem}[triangle]
 \setbeamertemplate{itemize subsubitem}[circle]
@@ -110,6 +116,75 @@ File Input/Output}
 \frametitle{Background Information}
 \url{http://waterservices.usgs.gov/}
 \url{http://nwis.waterdata.usgs.gov/nwis/pmcodes/}
+\url{http://docs.python.org/tutorial/inputoutput.html}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Reading and Writing with Strings}
+\begin{itemize}
+\item The simplest way to write information to a string is using \texttt{str}
+\begin{lstlisting}
+>>>a = 5.4
+>>>str(a)
+'5.4'
+\end{lstlisting}
+\item We typically want more control. Two main ways to do it. Old school (\texttt{\%}) and new school (\texttt{format})
+\item Formatted input and output are a key difference between Python 2.X and 3.X
+
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Writing Strings the Old School Way (\texttt{\%})}
+\begin{itemize}
+\item The general syntax is to make a string with conversion types for variables. For example:
+\begin{lstlisting}
+>>>outstr = 'I have %21.1f kg of %s and %d bins of %s' %(3.99983,'eggs',53,'spam')
+>>> outstr
+'I have                   4.0 kg of eggs and 53 bins of spam'
+>>>outstr = 'I have %-21.1f kg of %s and %0.3d bins of %s' %(3.99983,'eggs',53,'spam')
+>>> outstr
+'I have 4.0                   kg of eggs and 053 bins of spam'
+
+\end{lstlisting}
+\item The general idea is to make a string including \texttt{'\%'}, a conversion flag (optional), a width and resolution (optional), and a conversion type (required).
+\item[] For example: \texttt{\%<flag><width>.<resolution><type>}\newline{}\texttt{\%-12.3f} Is a left-justified, floating point value with width of 12 and 3 decimal places.
+\item Following the format string must be a list of values as a tuple identified by \texttt{\%}
+\item[] \texttt{'\%4d is the \%s\textbackslash{}n' \%(42,'answer')}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Writing Strings the Old School Way (\texttt{\%})}
+Details about formatted output available at:\newline{}
+\begin{small} \url{http://docs.python.org/library/stdtypes.html} \end{small}
+
+\begin{itemize}
+\item Conversion flag characters
+\begin{description}
+\Fontvi
+\item [\texttt{'\#'}] Invokes alternate behavior (see website for details)
+\item [\texttt{'0'}] Pads numeric values with zeros
+\item [\texttt{'-'}] Left-adjusts the output
+\item [\texttt{' '}] Leave a space before signed positive values so they line up with negative ones
+
+\end{description}
+\pause
+\item Most common conversion types. 
+\end{itemize}
+\begin{description}
+\Fontvi
+\item [\texttt{\%d} or \texttt{\%i} ] Signed integer
+\item [\texttt{\%f} or \texttt{\%F} ] Floating point
+\item [\texttt{\%e} or \texttt{\%E} ] Floating point exponential (lower or upper case)
+\item [\texttt{\%g} or \texttt{\%G} ] Combination of \texttt{\%f} and \texttt{\%e} depending on resolution
+\item [\texttt{\%s} or \texttt{\%r} ] String. Width is used, but not resolution
+
+\end{description}
 \end{frame}
 
 \begin{frame}[fragile]

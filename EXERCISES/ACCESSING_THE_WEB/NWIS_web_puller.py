@@ -60,14 +60,14 @@ stat_county = raw_input('Would you like to query by Station Numbers [stat] or Co
 if stat_county.lower() == 'count':
     cState = raw_input('Please enter state as full, abbreviated, or FIPS code:')
     cCounty = raw_input('Please enter county name or FIPS code\ninclude "county", "parish", etc:')
-    sttime = raw_input('Please enter start date in format "YYYY-MM-DD"':)
-    endtime = raw_input('Please enter end date in format "YYYY-MM-DD"':)
+    sttime = raw_input('Please enter start date in format "YYYY-MM-DD":')
+    endtime = raw_input('Please enter end date in format "YYYY-MM-DD":')
     outfilename = raw_input('Please enter a filename for your results:')
     retrieve_by_state_county(cState,cCounty,sttime,endtime,outfilename)
 elif stat_county.lower() == 'stat':
     tmp_input = raw_input('Please enter 14-digit station codes, separated by commas:')
-    sttime = raw_input('Please enter start date in format "YYYY-MM-DD"':)
-    endtime = raw_input('Please enter end date in format "YYYY-MM-DD"':)
+    sttime = raw_input('Please enter start date in format "YYYY-MM-DD":')
+    endtime = raw_input('Please enter end date in format "YYYY-MM-DD":')
     outfilename = raw_input('Please enter a filename for your results:')
     tmp = tmp_input.split(',')
     cStations = []
