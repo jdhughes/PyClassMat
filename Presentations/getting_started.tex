@@ -7,7 +7,6 @@
   \usecolortheme{whale}
   % or ...
 
-  \setbeamercovered{transparent}
   % or whatever (possibly just delete it)
   \setbeamertemplate{navigation symbols}{}
 }
@@ -15,7 +14,7 @@
 \setbeamertemplate{itemize items}[ball]
 \setbeamertemplate{itemize subitem}[triangle]
 \setbeamertemplate{itemize subsubitem}[circle]
-\setbeamercovered{transparent}
+\setbeamercovered{invisible}
 
 \usepackage{palatino} 
 \usepackage{listings} % Gives syntax highlighting for python code. 
@@ -98,7 +97,7 @@ Getting Started with Python}
 \tableofcontents
 \end{frame}
 
-\section{Preliminaries}
+\section[]{Preliminaries}
 \begin{frame}[fragile]
 \frametitle{What is Python?}
 \begin{columns}
@@ -162,7 +161,7 @@ For other packages, a couple options...
 \end{itemize}
 \end{frame}
 
-\section {Resources}
+\section[]{Resources}
 \begin{frame}[fragile]
 \frametitle{Getting Help: Active and Helpful Python Community}
 \begin{itemize}
@@ -216,7 +215,7 @@ All commands that result in output display it on the screen
 
 %%%
 % MODULES/PACKAGES
-\section{Modules and Packages}
+\section[]{Modules and Packages}
 \begin{frame}[fragile]
 \frametitle{Packages, Modules, Namespaces}
 First, a couple definitions.
@@ -271,29 +270,77 @@ s9 = sqrt(9)
 \frametitle{Module Example}
 
 \begin{lstlisting}
-import antigravity
 import this
+import antigravity
 \end{lstlisting}
+\pause
+\begin{itemize}
+
+\item These are kind of humorous but (especially) the antigravity example raises an important issue: modules not only contain a listing of code and definitions, but can also \emph{execute}!
+
+\item So, use caution and only load modules from trustworthy sources.
+\end{itemize}
 
 \end{frame}
 
-\section{Scripts}
+\section[]{Scripts}
 \begin{frame}[fragile]
 \frametitle{Using Scripts}
-Scripts allow you to save the logic and definitions of a program much in the
+\begin{itemize}
+\item Scripts allow you to save the logic and definitions of a program much in the
  way compiled source code does for FORTRAN, C, and other languages.
- \newline{}
- \newline{}
-The basic idea is to contain all code, in the same way you would type it into an interactive 
+\item The basic idea is to contain all code, in the same way you would type it into an interactive 
 command window, in a file with the extension \texttt{.py}
-\newline{}
-\newline{}
-You can then execute the script by typing \newline{} \texttt{python <scriptname>.py} \newline{}at the command line.
+\item You can then execute the script by typing \newline{} \texttt{python <scriptname>.py} \newline{}at the command line.
+\pause
+\item We will use scripts extensively so no more about them here...
+\end{itemize}
+\end{frame}
+
+\section[]{Writing, Editing, and Running Scripts}
+\begin{frame}[fragile]
+\frametitle{Composing scripts in a text editor}
+There are a couple important Python idiosyncrasies that influence text editor choice.
+\begin{enumerate}
+\item You don't close loops in python, so indentation is paramount!
+\pause
+\begin{lstlisting}
+for i in stuff:
+     print i
+\end{lstlisting}
+\pause
+\item Tabs aren't consistent so change them to spaces
+\item Code highlighting and code folding can be nice
+\pause
+\item An IDE lets you run the code in context and sometimes includes autocomplete and other features.
+
+\end{enumerate}
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Using Scripts: An Example}
-
+\frametitle{Some Suggested Environments/Editors}
+This list is neither exhaustive nor fully endorsed!
+\begin{itemize}
+\item Editors
+\begin{small}
+\item[] Notepad++, TextPad, TextWrangler, VIM, Emacs, \newline{}
+Ultra Edit, Komodo Edit
+\end{small}
+\item Integrated Development Environments (IDEs)
+\begin{small}
+\item[] Wing IDE, Komodo IDE, IDLE, \newline{}
+Python Tools for Visual Studio10, NetBeans, Eclipse 
+\end{small}
+\end{itemize}
+\pause
+And a brief aside on version control...
+\begin{itemize}
+\item Git and Github.com allow you to keep track of and collaborate on code. Worth a look!
+\end{itemize}
+\pause
+\begin{tiny}
+OK, that was kind of an endorsement
+\end{tiny}
 \end{frame}
 
 
