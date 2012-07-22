@@ -105,7 +105,52 @@ Numpy Arrays}
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Working with Arrays}
+\frametitle{Basic Operations}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Arrays and Functions}
+\begin{lstlisting}
+In [55]: T = 2500 #ft2/d
+
+In [56]: S = 0.01 #unitless
+
+In [57]: t = 1.0 #d
+
+In [58]: Q = 10000 #ft3/d
+
+In [59]: r = concatenate( (array([1]), arange(10,110, 10)) )
+
+In [60]: r
+Out[60]: array([  1,  10,  20,  30,  40,  50,  60,  70,  80,  90, 100])
+
+In [61]: u = r ** 2 * S / 4. / T / t
+
+In [62]: from scipy.special import expn
+
+In [63]: wu = expn(1, u)
+
+In [64]: s = Q / 4. / pi / T * wu
+
+In [65]: s
+Out[65]:
+array([ 4.21388046,  2.74804077,  2.30686505,  2.04889705,  1.86597563,
+        1.72420422,  1.60848432,  1.51076188,  1.42622927,  1.35178543,
+        1.2853129 ])
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Universal Functions}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Indexing, Slicing, and Iterating}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Shape Manipulation}
 \end{frame}
 
 \end{document}
