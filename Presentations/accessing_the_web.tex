@@ -1,4 +1,3 @@
-
 \documentclass{beamer}
 % \documentclass[handout,xcolor=pdftex,dvipsnames,table]{beamer}
 
@@ -8,7 +7,6 @@
   \usecolortheme{whale}
   % or ...
 
-  \setbeamercovered{transparent}
   % or whatever (possibly just delete it)
   \setbeamertemplate{navigation symbols}{}
 }
@@ -16,13 +14,14 @@
 \setbeamertemplate{itemize items}[ball]
 \setbeamertemplate{itemize subitem}[triangle]
 \setbeamertemplate{itemize subsubitem}[circle]
-\setbeamercovered{transparent}
+\setbeamercovered{invisible}
 
 \usepackage{palatino} 
 \usepackage{listings} % Gives syntax highlighting for python code. 
 \usepackage{color} % Used for syntax highlighting. 
 \usepackage{textcomp} % Used for syntax highlighting. 
-
+\usepackage{caption}
+\captionsetup{labelformat=empty,labelsep=none}
 % This gives syntax highlighting in the python environment 
 \definecolor{gray}{gray}{0.5} 
 \definecolor{key}{rgb}{0,0.5,0} 
@@ -61,57 +60,66 @@ literate=*{:}{{\textcolor{blue}:}}{1}%
 {]}{{\textcolor{blue}]}}{1}%
 {<}{{\textcolor{blue}<}}{1}%
 {>}{{\textcolor{blue}>}}{1},%
-numbers=left,
+numbers=none,
 }
 
+\newcommand{\putat}[3]{\begin{picture}(0,0)(0,0)\put(#1,#2){#3}\end{picture}}
+
+
+
+\title[]{Python Workshop\\
+Accessing the Web}
+
+\author[Fienen] % (optional, use only with lots of authors)
+{Mike~Fienen}
+\institute[USGS] % (optional, but mostly needed)
+{
+  U.S. Geological Survey\\
+  Wisconsin Water Science Center, Middleton, Wisconsin USA
+  }
+  \titlegraphic{\includegraphics[scale=0.5]{figures/c_USGSid1.pdf}}
+  
+
+\date[UQ12] % (optional, should be abbreviation of conference name)
+{USGS National Groundwater Workshop, August 2012}
+
+\subject{Python}
 
 
 \begin{document}
 
+\begin{frame}
+  \titlepage
+\end{frame}
+\logo{\vspace{-0.3cm} \includegraphics[width=1.5cm]{figures/c_USGSid1.pdf}\hspace*{11.10cm}}  
 
-\begin{frame}[fragile]{Code In Frame}
-Here is some python code.  Note that the [fragile] keyword is required on the begin frame line.  See the following site for additional details: \url{http://robfelty.com/2008/09/22/beamer-fragile-frames}
+\begin{frame}{Outline}
+\tableofcontents
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Overview}
+We are building a model and we want to include the water elevations in a few wells that are part of NWIS in our calibration data. We need to fetch the data, make plots of the results, and format the observations section of a PEST control file.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Background Information}
+\url{http://waterservices.usgs.gov/}
+\url{http://nwis.waterdata.usgs.gov/nwis/pmcodes/}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Sample Code}
 \begin{lstlisting}
-class GridNodeIterator(object):
-    def __init__(self, grid):
-        self.index = 0
-        return
-        
-    def __iter__(self):
-        return self
-        
-    def next(self):
-        if self.index == self.nodes - 1:
-            raise StopIteration()
-        nodeobj = self.get_nodeobj(self.index)
-        self.index += 1
-        return nodeobj$
+import numpy as np
+from datetime import datetime
+mpl.rcParams['pdf.fonttype'] = 42 # this strange bit of code makes fonts 
+                                  # editable in Adobe Illustator
+import matplotlib.pyplot as plt
+import time
+import re
 \end{lstlisting}
 \end{frame}
 
 
-\begin{frame}{Code In Figure In Frame}
-Here is some python code.  In this case, the code was taken out of a python source file.
-  \begin{figure}
-  \centering
-        \lstset{numbers=none}
-        \lstinputlisting[language=python, firstline=9,lastline=20]{pyinbeam.py}
-   \end{figure}
-
-\end{frame}
-
-\begin{frame}{Code In Figure In Frame}
-Here is some python code.  In this case, the code was taken out of a python source file.
-  \begin{figure}
-  \centering
-        \lstset{numbers=none}
-        \lstinputlisting[language=python, firstline=21,lastline=43]{pyinbeam.py}
-   \end{figure}
-
-\end{frame}
-
-
-
 \end{document}
-
-

@@ -1,5 +1,5 @@
 *.py[co]
-
+.DS_store
 # Packages
 *.egg
 *.egg-info
@@ -22,6 +22,15 @@ pip-log.txt
 
 #Translations
 *.mo
+
+# LaTeX cruft
+*.aux
+*.toc
+*.log
+*.vrb
+*.out
+
+
 
 #Mr Developer
 .mr.developer.cfg
