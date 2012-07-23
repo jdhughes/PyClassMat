@@ -35,3 +35,8 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 /Documents
+*.gz
+*.fdb_latexmk
+*.fls
+*.snm
+*.nav
