@@ -1,0 +1,16 @@
+To run the functions (more detailed instructions to follow!) run:
+
+NWIS_read_driver.py
+
+The first variable "testCase" determines the behavior. 
+
+if testCase == 1: this runs a bunch of little functions that are later
+	used by the full program. To run an NWIS query, we need something called
+	a FIPS number for the state and the county. This code does the lookup
+	for county = "DANE" and state = "WISCONSIN".
+
+if testCase == 2: this runs the entire dealio including running all the subfunctions
+	to get the FIPS codes, prompting the user for all the input arguments, querying
+	NWIS, parsing the results, and plotting up hydrographs.
+	If using testCase==2, no need to set any variables ahead of time -- all will be 
+	prompted for. 
