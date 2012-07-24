@@ -82,6 +82,8 @@ def Web_pull_driver():
         cState = raw_input('Please enter state as full, abbreviated, or FIPS code:')
         if stat_county.lower() == 'county':
             cCounty = raw_input('Please enter county name or FIPS code\ninclude "county", "parish", etc:')
+        else:
+            cCounty = '999999'
         sttime = raw_input('Please enter start date in format "YYYY-MM-DD":')
         endtime = raw_input('Please enter end date in format "YYYY-MM-DD":')
         outfilename = raw_input('Please enter a filename for your results:')
