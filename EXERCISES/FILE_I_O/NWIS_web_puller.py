@@ -82,11 +82,13 @@ def Web_pull_driver():
         cState = raw_input('Please enter state as full, abbreviated, or FIPS code:')
         if stat_county.lower() == 'county':
             cCounty = raw_input('Please enter county name or FIPS code\ninclude "county", "parish", etc:')
+        else:
+            cCounty = '999999'
         sttime = raw_input('Please enter start date in format "YYYY-MM-DD":')
         endtime = raw_input('Please enter end date in format "YYYY-MM-DD":')
         outfilename = raw_input('Please enter a filename for your results:')
         retrieve_by_state_county(cState,cCounty,sttime,endtime,outfilename,stat_county.lower())
-    elif stat_county.lower() == 'stat':
+    elif stat_county.lower() == 'station':
         tmp_input = raw_input('Please enter 15-digit station codes, separated by commas:')
         sttime = raw_input('Please enter start date in format "YYYY-MM-DD":')
         endtime = raw_input('Please enter end date in format "YYYY-MM-DD":')
