@@ -75,7 +75,7 @@ numbers=none,
 
 
 \title[]{Python Workshop\\
-Process Flow}
+ \includegraphics[scale=0.055]{figures/python-app.png}\hspace{5 pt}Process Flow\hspace{5 pt}\includegraphics[scale=0.055]{figures/python-app.png}}
 
 \author[Hughes] % (optional, use only with lots of authors)
 {Joseph D.~Hughes}
@@ -104,23 +104,21 @@ Process Flow}
 \tableofcontents
 \end{frame}
 
+\section{Background Information}
 \begin{frame}[fragile]
-\frametitle{Overview}
+\frametitle{Background Information}
 \begin{itemize}
+\item Example python script \texttt{ProcessFlowExamples.py}
 
-\item Much of what is useful to do in Python is reading files, manipulating the data, and writing out results in another format
-\item Python and Numpy provide ways to read and write ASCII and binary files. We will focus on ASCII files
+\item Process flow control resources: \\
+\href{http://docs.python.org/tutorial/controlflow.html}{\texttt{\small{\textcolor{blue}{http://docs.python.org/tutorial/controlflow.html}}}}
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
-\frametitle{Background Information}
-Process flow control resources: \\
-\href{http://docs.python.org/tutorial/controlflow.html}{\texttt{\small{\textcolor{blue}{http://docs.python.org/tutorial/controlflow.html}}}}
-\end{frame}
-
+\section{Process Flow Options}
+\subsection{while iterator, continue, and break}
 \begin{frame}{\texttt{\textbf{while}}, \texttt{\textbf{continue}}, and \texttt{\textbf{break}}}
-\texttt{ProcessFlowExamples.py} \\ Import data from an external file and iterate over data using \texttt{\textbf{while}} and \texttt{\textbf{print}} last entry.
+\small{Import data from an external file and iterate over data using \texttt{\textbf{while}} and \texttt{\textbf{print}} last entry.}
   \begin{figure}[ht]
   \centering
         \lstset{numbers=left}
@@ -128,50 +126,62 @@ Process flow control resources: \\
    \end{figure}
 \end{frame}
 
+\subsection{range iterator}
 \begin{frame}{\texttt{\textbf{range}} iterator and \texttt{\textbf{continue}}}
-\texttt{ProcessFlowExamples.py} \\ Import data from an external file and iterate over data using \texttt{\textbf{range}}  and \texttt{\textbf{print}}  last entry.
+\small{Import data from an external file and iterate over data using \texttt{\textbf{range}}  and \texttt{\textbf{print}}  last entry.}
   \begin{figure}[ht]
   \centering
         \lstset{numbers=left}
         \lstinputlisting[language=python, firstline=1,lastline=5]{python/ProcessFlowExamples.py}
-       $\vdots$
         \lstinputlisting[language=python, firstline=19,lastline=25,firstnumber=19]{python/ProcessFlowExamples.py}
    \end{figure}
 \end{frame}
 
+\subsection{xrange iterator}
 \begin{frame}{\texttt{\textbf{xrange}} iterator and \texttt{\textbf{continue}}}
-\texttt{ProcessFlowExamples.py} \\ Import data from an external file and iterate over data using \texttt{\textbf{xrange}}  and \texttt{\textbf{print}}  last entry.
+\small{Import data from an external file and iterate over data using \texttt{\textbf{xrange}}  and \texttt{\textbf{print}}  last entry.}
   \begin{figure}[ht]
   \centering
         \lstset{numbers=left}
         \lstinputlisting[language=python, firstline=1,lastline=5]{python/ProcessFlowExamples.py}
-       $\vdots$
         \lstinputlisting[language=python, firstline=26,lastline=32,firstnumber=26]{python/ProcessFlowExamples.py}
    \end{figure}
 \end{frame}
 
+\subsection{element iterator}
 \begin{frame}{\texttt{\textbf{in}} iterator and \texttt{\textbf{continue}}}
-\texttt{ProcessFlowExamples.py} \\ Import data from an external file and iterate over data using \texttt{\textbf{in}} iterator and \texttt{\textbf{print}}  last entry.
+\small{Import data from an external file and iterate over data using \texttt{\textbf{in}} iterator and \texttt{\textbf{print}}  last entry.}
   \begin{figure}[ht]
   \centering
         \lstset{numbers=left}
         \lstinputlisting[language=python, firstline=1,lastline=5]{python/ProcessFlowExamples.py}
-       $\vdots$
         \lstinputlisting[language=python, firstline=33,lastline=42,firstnumber=33]{python/ProcessFlowExamples.py}
    \end{figure}
 \end{frame}
 
-\begin{frame}{\texttt{\textcolor{red}{enumerate}} iterator and \texttt{\textbf{continue}}}
-\texttt{ProcessFlowExamples.py} \\ Import data from an external file and iterate over data using \texttt{\textcolor{red}{enumerate}} iterator and \texttt{\textbf{print}}  last entry.
+\subsection{enumeration iterator}
+\begin{frame}{\texttt{enumerate} iterator and \texttt{\textbf{continue}}}
+\small{Import data from an external file and iterate over data using \texttt{enumerate} iterator and \texttt{\textbf{print}}  last entry.}
   \begin{figure}[ht]
   \centering
         \lstset{numbers=left}
         \lstinputlisting[language=python, firstline=1,lastline=5]{python/ProcessFlowExamples.py}
-       $\vdots$
-        \lstinputlisting[language=python, firstline=43,lastline=49,firstnumber=43]{python/ProcessFlowExamples.py}
+        \lstinputlisting[language=python, firstline=43,lastline=48,firstnumber=43]{python/ProcessFlowExamples.py}
    \end{figure}
 \end{frame}
 
+\subsection{enumeration iterator with zip}
+\begin{frame}{\texttt{enumerate} iterator with \texttt{zip} and \texttt{\textbf{continue}}}
+\small{Import data from an external file and iterate over data using \texttt{enumerate} iterator with \texttt{zip} and \texttt{\textbf{print}}  last entry.}
+  \begin{figure}[ht]
+  \centering
+        \lstset{numbers=left}
+        \lstinputlisting[language=python, firstline=1,lastline=5]{python/ProcessFlowExamples.py}
+        \lstinputlisting[language=python, firstline=49,lastline=55,firstnumber=55]{python/ProcessFlowExamples.py}
+   \end{figure}
+\end{frame}
+
+\section{Results}
 \begin{frame}[fragile]
 \frametitle{\texttt{ProcessFlowExamples.py} output}
   \begin{figure}[ht]

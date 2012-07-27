@@ -46,3 +46,10 @@ for ipos,t in enumerate(q):
     if ipos+1 < ntimes:
         continue
     print '{0:25s}: {1}, {2}, {3}'.format( 'enumeration iteration', ipos+1, t[0], t[1] )
+#--enumeration iterator with zip
+v0, v1 = np.copy( q[:,0] ), np.copy( q[:,1] )
+for ipos,( t0, t1 ) in enumerate( zip( v0,v1 ) ):
+    #--only print last line
+    if ipos+1 < ntimes:
+        continue
+    print '{0:25s}: {1}, {2}, {3}'.format( 'enumeration/zip iteration', ipos+1, t0, t1 )
