@@ -221,7 +221,7 @@ All commands that result in output display it on the screen
 First, a couple definitions.
 \begin{description}
 \item[Script:] A text file containing variables, functions, and definitions that can be 
- loaded for use at command line or in another script
+ loaded for use at command line or in another script (a.k.a. ``code")
 \item[Module:] A script containing definitions for a specific purpose
 \item[Package:] A group of modules
 \item[Namespace:] A base name for a module used to organize and keep track of its provenance.
@@ -235,11 +235,13 @@ There are several ways to import a module or package.
 \pause
 \item Preserving the namespace as the module name
 \begin{lstlisting}
-import numpy
+>>>import numpy
 \end{lstlisting}
 To use the function \texttt{sqrt} must type
 \begin{lstlisting}
-s9 = numpy.sqrt(9)
+>>>s9 = numpy.sqrt(9)
+>>>s9
+3.0
 \end{lstlisting}
 \pause
 \item {You can also provide an alias...}
@@ -247,21 +249,28 @@ s9 = numpy.sqrt(9)
 \column{3.5cm}
 ...for the namespace
 \begin{lstlisting}
-import numpy as np
-s9 = np.sqrt(9)
+>>>import numpy as np
+>>>s9 = np.sqrt(9)
+>>>s9
+3.0
 \end{lstlisting}
 \column{4.5cm}
 ...or for the function
 \begin{lstlisting}
-from numpy import sqrt as pow_to_minus_pfive
-s9 = pow_to_minus_pfive(9)
+>>>from numpy import sqrt as pow_to_minus_pfive
+>>>s9 = pow_to_minus_pfive(9)
+>>>s9
+3.0
 \end{lstlisting}
 \end{columns}
 \pause
 \item Or import the function without the namespace \emph{(danger!)}
 \begin{lstlisting}
-from numpy import *
-s9 = sqrt(9)
+>>>from numpy import *
+>>>s9 = sqrt(9)
+>>>s9
+3.0
+
 \end{lstlisting}
 \end{itemize}
 \end{frame}
@@ -276,7 +285,7 @@ import antigravity
 \pause
 \begin{itemize}
 
-\item These are kind of humorous but (especially) the antigravity example raises an important issue: modules not only contain a listing of code and definitions, but can also \emph{execute}!
+\item These are kind of humorous but (especially) the antigravity example raises an important issue: \newline{}modules not only contain a listing of code and definitions, but can also \emph{execute}!
 
 \item So, use caution and only load modules from trustworthy sources.
 \end{itemize}
@@ -293,7 +302,11 @@ import antigravity
 command window, in a file with the extension \texttt{.py}
 \item You can then execute the script by typing \newline{} \texttt{python <scriptname>.py} \newline{}at the command line.
 \pause
-\item We will use scripts extensively so no more about them here...
+\item Make a textfile called ``hw.py" with the following code in it:
+\begin{lstlisting}
+print ``Hello World!"
+\end{lstlisting}
+\item Now, type \texttt{python hw.py} at the command line.
 \end{itemize}
 \end{frame}
 
@@ -345,6 +358,7 @@ And a brief aside on version control...
 OK, that was kind of an endorsement
 \end{tiny}
 \end{frame}
+
 
 
 

@@ -112,13 +112,8 @@ File Input/Output}
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
-\frametitle{Background Information}
-\url{http://waterservices.usgs.gov/}
-\url{http://nwis.waterdata.usgs.gov/nwis/pmcodes/}
-\url{http://docs.python.org/tutorial/inputoutput.html}
-\end{frame}
 
+\section{Reading and Writing Strings}
 
 \begin{frame}[fragile]
 \frametitle{Reading and Writing with Strings}
@@ -138,6 +133,7 @@ File Input/Output}
 
 \begin{frame}[fragile]
 \frametitle{Writing Strings the Old School Way (\texttt{\%})}
+\begin{small}
 \begin{itemize}
 \item The general syntax is to make a string with conversion types for variables. For example:
 \begin{lstlisting}
@@ -150,10 +146,13 @@ File Input/Output}
 
 \end{lstlisting}
 \item The general idea is to make a string including \texttt{'\%'}, a conversion flag (optional), a width and resolution (optional), and a conversion type (required).
-\item[] For example: \texttt{\%<flag><width>.<resolution><type>}\newline{}\texttt{\%-12.3f} Is a left-justified, floating point value with width of 12 and 3 decimal places.
+\item[] For example: \newline{}
+\texttt{\%<flag><width>.<resolution><type>}\newline{}\texttt{\%-12.3f} Is a left-justified, floating point value with width of 12 and 3 decimal places.
 \item Following the format string must be a list of values as a tuple identified by \texttt{\%}
+
 \item[] \texttt{'\%4d is the \%s\textbackslash{}n' \%(42,'answer')}
 \end{itemize}
+\end{small}
 \end{frame}
 
 
@@ -197,7 +196,8 @@ Details about new school string formatting at:\newline{}
 \begin{itemize}
 \item The general syntax is similar, but conversion information is supplied differently. For example:
 \begin{lstlisting}
->>>outstr = 'I have %{0:21.1f} kg of {1:s} and {2:0=3d} bins of {3:s}'.format(3.99983,'eggs',53,'spam')
+>>>outstr = 'I have %{0:21.1f} kg of {1:s} and {2:0=3d} bins of {3:s}'.
+							format(3.99983,'eggs',53,'spam')
 >>> outstr
 'I have                   4.0 kg of eggs and 053 bins of spam'
 \end{lstlisting}
@@ -211,7 +211,7 @@ The general pattern is \texttt{\{[index]:[format]\}}\newline{}
 
 \end{itemize}
 \end{frame}
-
+\section{Text File Reading and Writing}
 \begin{frame}[fragile]
 Now that we can write strings, how about we write them to files? \newline{}
 We should also know how to read stuff back in from files
@@ -226,7 +226,7 @@ ifp = open('somefile.txt','r')
 ofp = open('someotherfile.txt','w')
 \end{lstlisting}
 \begin{itemize}
-\item This object can be used to read or write from. \\I use \texttt{ifp} for ``input file pointer" and \texttt{ofp} for ``output file pointer" \\
+\item This object can be used to read or write from. \\I use \texttt{ifp} for ``input file pointer" and\\ \texttt{ofp} for ``output file pointer" \\
 The arguments \texttt{'r'} and \texttt{'w'} indicate ``read" and ``write" respectively.
 \end{itemize}
 \item To read the file can use \texttt{readline()} or \texttt{readlines()}\\
@@ -237,13 +237,142 @@ The arguments \texttt{'r'} and \texttt{'w'} indicate ``read" and ``write" respec
 \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]
+\frametitle{Parsing input strings}
+\begin{itemize}
+\item Using \texttt{strip} and \texttt{split}
+\begin{lstlisting}
+>>>line = 'USGS        430406089232901 2010-12-03      15.04   P\t\r\n'
+>>>line.strip()
+'USGS\t430406089232901\t2010-12-03\t15.04\tP'
+\end{lstlisting}
+\begin{itemize} 
+\item \texttt{strip()} removes newline and tab characters from the end 
+\end{itemize}
+\begin{lstlisting}
+>>>line.strip().split()
+['USGS', '430406089232901', '2010-12-03', '15.04', 'P']
+>>>line.strip().split('0')
+['USGS\t43', '4', '6', '892329', '1\t2', '1', '-12-', '3\t15.', '4\tP']
+\end{lstlisting}
+\begin{itemize} 
+\item \texttt{split()} breaks up a string on whitespace 
+\item Can take any character as an argument (usually ',' or '~') 
+\item Stacking \texttt{strip} and \texttt{split} is a common violation of the general rule not to stack up function calls
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Parsing input strings (continued)}
+\begin{itemize}
+\item Using \texttt{pop}
+\begin{lstlisting}
+>>>>>>line = 'USGS        430406089232901 2010-12-03      15.04   P\t\r\n'
+>>>a=line.strip().split()
+>>>a.pop()
+'P'
+>>>a
+['USGS', '430406089232901', '2010-12-03', '15.04']
+>>>a.pop(1)
+'430406089232901'
+>>>a
+['USGS', '2010-12-03', '15.04']
+\end{lstlisting}
+\begin{itemize} 
+\item \texttt{pop()} \emph{both} returns an element from a list \emph{and} removes it from the remaining list
+\end{itemize}
+\item Regular expressions are very flexible but another topic 
+\begin{lstlisting}
+>>>import re
+>>>allints = re.findall("[0-9]",line)
+>>>allints
+['4', '3', '0', '4', '0', '6', '0', '8', '9', '2', '3', '2', '9', '0', '1', '2', 
+'0', '1', '0', '1', '2', '0', '3', '1', '5', '0', '4']
+
+\end{lstlisting}
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{An Example Text File from NWIS}
+\begin{tiny}
+\begin{verbatim}
+# ---------------------------------- WARNING ----------------------------------------
+# Provisional data are subject to revision. Go to
+# http://waterdata.usgs.gov/nwis/help/?provisional for more information.
+#
+# File-format description:  http://waterdata.usgs.gov/nwis/?tab_delimited_format_info
+# Automated-retrieval info: http://waterdata.usgs.gov/nwis/?automated_retrieval_info
+#
+# Contact:   gs-w_support_nwisweb@usgs.gov
+# retrieved: 2012-07-16 17:24:35 EDT	(vaas01)
+#
+# Data for the following 2 site(s) are contained in this file
+#    USGS 430406089232901 DN-07/09E/23-1297
+#    USGS 430427089284901 DN-07/09E/19-0064
+# -----------------------------------------------------------------------------------
+#
+# Data provided for site 430406089232901
+#    DD parameter statistic   Description
+#    01   72019     00001     Depth to water level, feet below land surface (Maximum)
+#
+# Data-value qualification codes included in this output:
+#     P  Provisional data subject to revision.
+#
+agency_cd	site_no	datetime	01_72019_00001	01_72019_00001_cd
+5s	15s	20d	14n	10s
+USGS	430406089232901	2010-12-03	15.04	P
+USGS	430406089232901	2010-12-04	14.92	P
+...
+\end{verbatim}
+\end{tiny}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Reading NWIS Output File}
+\begin{lstlisting}
+    # loop over the input data, keep only proper data rows. Parse and assign to lists
+    for lnum, line in enumerate(tmpdat):
+        # first read the lookup information from the header of the file
+        if ("data for the following" in line.lower()):
+            nWells = int(re.findall("[0-9]+",line)[0])
+            statnums = []
+            countynums = []
+            for cwell in np.arange(nWells):
+                nextline = lnum+1+cwell
+                tmp = tmpdat[nextline].strip().split()
+                statnums.append(tmp[2])
+                countynums.append(tmp[3])
+            station_lookup = dict(zip(statnums,countynums))
+                
+        if (('usgs' in line.lower()) and ('#' not in line)):
+            tmp = line.strip().split() # strip newline off the end and split on whitespace
+            Site_ID.append(tmp[1])
+            dates.append(datetime.strptime(tmp[2],indatefmt)) #convert date to a time tuple
+            DTW.append(tmp[3])
+            prov_code.append(tmp[4].lower()) # --> note conversion to lower case!
+\end{lstlisting}
+\end{frame}
 
 \begin{frame}[fragile]
 \frametitle{\texttt{np.genfromtxt}: flexible way to read columns}
-Example file: STATE\_FIPS.csv \\
-\texttt{State Abbreviation,FIPS Code,State Name} \\
-\texttt{AK,02,ALASKA} \\
-\texttt{AL,01,ALABAMA}  \\
+
+Example file: \texttt{STATE\_FIPS.csv} 
+\begin{tiny}
+\begin{verbatim}
+State Abbreviation,FIPS Code,State Name
+AK,02,ALASKA
+AL,01,ALABAMA
+AR,05,ARKANSAS
+AS,60,AMERICAN SAMOA
+AZ,04,ARIZONA
+CA,06,CALIFORNIA
+...
+\end{verbatim}
+\end{tiny}
 \pause
 \begin{lstlisting}
 import numpy as np
@@ -252,9 +381,11 @@ indat = np.genfromtxt(infilename,delimiter=',',dtype=None,names=True)
 \end{lstlisting}
 \pause
 \begin{description}
+\begin{tiny}
 \item[\texttt{delimiter=','}] delimiter can be \emph{anything}
 \item[\texttt{dtype=None}] Numpy interprets column data types. If unknown, makes it a string
 \item[\texttt{names=True}] Each column gets a data type and a name
+\end{tiny}
 \end{description}
 \pause
 \begin{lstlisting}
@@ -267,5 +398,58 @@ dtype=[('State_Abbreviation', '|S2'), ('FIPS_Code', '<i4'), ('State_Name', '|S20
 \hskip 1.5 cm \emph{N.B.$\rightarrow$underscore replaces space in names}
 \end{frame}
 
+\begin{frame}[fragile]
+\frametitle{Writing Back out to a File}
+\begin{itemize}
+\item First need a file object in the same way as reading\\
+\begin{lstlisting}
+ofp = open('some_outfile.txt','w')
+\end{lstlisting}
+\item Next, create a string of output
+\item Write the string using 
+\begin{lstlisting}
+ofp.write(<string>)
+\end{lstlisting}
+\item Remember to put a newline character \texttt{'\textbackslash n'}~at the end of each line 
+
+\end{itemize}
+\end{frame}
+
+\section{Data from the Web}
+\begin{frame}[fragile]
+\frametitle{Pulling a data file from the Web}
+\begin{itemize}
+
+\item An example using REST (Representational State Transfer a.k.a. a RESTful query) of USGS water data.
+\begin{lstlisting}
+import urllib
+fullURL = 'www.place.gov/some_path_to_a_data_file.txt'
+datastream = urllib.urlopen(fullURL).read()
+outfilename = 'local_filename.txt'
+open(outfilename,'wb').write(datastream)
+\end{lstlisting}
+
+\item \texttt{urllib} enables simple interaction with a URL
+\item BeautifulSoup allows for much more sophisticated complete web-scraping applications (not built in)
+\item Writing the local version of the file as binary is most robust:
+\begin{itemize}
+\item Retains a copy of exactly what was downloaded
+\item Writes the copy without respect to formatting issues
+\end{itemize}
+\item One could work only in memory and not make a local copy
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Some Useful Resources}
+\begin{itemize}
+
+\item Building queries for RESTful queries of USGS water data \\  \url{http://waterservices.usgs.gov/}
+\item USGS Water data type pm code lookup \\
+\url{http://nwis.waterdata.usgs.gov/nwis/pmcodes/}
+\item General I/O information in Python documentation \\ 
+\url{http://docs.python.org/tutorial/inputoutput.html}
+\end{itemize}
+\end{frame}
 
 \end{document}
