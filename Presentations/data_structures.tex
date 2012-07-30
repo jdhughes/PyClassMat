@@ -443,28 +443,177 @@ value:  cell 2
 \subsection{Others}
 \begin{frame}[fragile]
 \frametitle{Others}
-Sets\\
-Boolean\\
-None
+\begin{itemize}
+\item Sets: A set is an unordered collection with no duplicates.
+\begin{lstlisting}
+In [12]: s = set(['one', 'one', 'two', 'three'])
+
+In [13]: s
+Out[13]: set(['one', 'three', 'two'])
+\end{lstlisting}
+
+\item Boolean: value of True or False (no quotes, and capitalized first letter)\\
+\begin{lstlisting}
+In [14]: done = False
+
+In [15]: if not done: print 'still working...'
+   ....:
+still working...
+
+\end{lstlisting}
+\item None (without quotes and capitalized first letter) indicates the absence of a value
+\end{itemize}
 \end{frame}
 
 \section{Working with Data Structures}
 \subsection{Shared References}
 \begin{frame}[fragile]
 \frametitle{Shared References}
-\begin{itemize}
-\item{In-Place Changes}
-\item{Shared References and Equality}
-\end{itemize}
-\tiny{See pages 116-121 in Learning Python, Third Edition}
+  \centering
+    \includegraphics[width=0.5\textwidth]{figures/sharedref1.png} 
+  \begin{itemize}
+    \item{Variable nlay and nrow both point to the same object in memory (an integer value of 10)}
+  \end{itemize}
+  \tiny{See pages 116-121 in Learning Python, Third Edition}
 \end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Shared References}
+  \centering
+    \includegraphics[width=0.5\textwidth]{figures/sharedref2.png} 
+  \begin{itemize}
+    \item{The new assigment of nlay creates a new object (an integer value of 1)}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Shared References}
+  \begin{lstlisting}
+In [30]: model1 = ['mf.bas', 'mf.dis', 'mf.lpf', 'mf.wel', 'mf.pcg']
+
+In [31]: model2 = model1
+
+In [32]: model1
+Out[32]: ['mf.bas', 'mf.dis', 'mf.lpf', 'mf.wel', 'mf.pcg']
+
+In [33]: model2
+Out[33]: ['mf.bas', 'mf.dis', 'mf.lpf', 'mf.wel', 'mf.pcg']
+
+In [34]: model1 = None
+
+In [35]: model1
+
+In [36]: model2
+Out[36]: ['mf.bas', 'mf.dis', 'mf.lpf', 'mf.wel', 'mf.pcg']
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{In-Place Changes}
+  \begin{lstlisting}
+In [39]: model1 = ['mf.bas', 'mf.dis', 'mf.lpf', 'mf.wel', 'mf.pcg']
+
+In [40]: model2 = model1
+
+In [41]: model2[3] = 'mf2.wel'
+
+In [42]: model1
+Out[42]: ['mf.bas', 'mf.dis', 'mf.lpf', 'mf2.wel', 'mf.pcg']
+
+In [43]: model2
+Out[43]: ['mf.bas', 'mf.dis', 'mf.lpf', 'mf2.wel', 'mf.pcg']
+  \end{lstlisting}
+\begin{itemize}
+  \item Both lists contain 'mf2.wel'
+  \item Here we changed a component of the model2 object and not the list object itself
+  \item This can cause undesired behavior
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{In-Place Changes}
+  \begin{lstlisting}
+In [44]: model1 = ['mf.bas', 'mf.dis', 'mf.lpf', 'mf.wel', 'mf.pcg']
+
+In [45]: model2 = model1[:]
+
+In [46]: model2[3] = 'mf2.wel'
+
+In [47]: model1
+Out[47]: ['mf.bas', 'mf.dis', 'mf.lpf', 'mf.wel', 'mf.pcg']
+
+In [48]: model2
+Out[48]: ['mf.bas', 'mf.dis', 'mf.lpf', 'mf2.wel', 'mf.pcg']
+  \end{lstlisting}
+\begin{itemize}
+  \item By using model2 = model1[:] we created a copy of model1
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Testing for Equality}
+\begin{columns}[c]
+\column{2.5in}
+\begin{itemize}
+  \item '==' tests to see if the two objects have the same value
+  \item 'is' tests to see if the two variables point to the same object 
+\end{itemize}
+
+  \column{2.5in}
+  \begin{lstlisting}
+In [50]: a = [0, 1, 2, 3]
+
+In [51]: b = a
+
+In [52]: c = a[:]
+
+In [53]: a == b
+Out[53]: True
+
+In [54]: a == c
+Out[54]: True
+
+In [55]: b == c
+Out[55]: True
+
+In [56]: a is b
+Out[56]: True
+
+In [57]: a is c
+Out[57]: False
+
+In [58]: b is c
+Out[58]: False
+  \end{lstlisting}
+
+
+\end{columns}
+\end{frame}
+
 
 \subsection{Zip}
 \begin{frame}[fragile]
 \frametitle{Zip}
 \begin{itemize}
-\item{What is Zip?}
+\item zip provides a way to combine two lists, element by element, into a new list containing a tuple for each pair
 \end{itemize}
+\begin{lstlisting}
+In [8]: alist = ['a1', 'a2', 'a3', 'a4']
+
+In [9]: blist = ['b1', 'b2', 'b3', 'b4']
+
+In [10]: zip(alist, blist)
+Out[10]: [('a1', 'b1'), ('a2', 'b2'), ('a3', 'b3'), ('a4', 'b4')]
+
+In [11]: for a, b in zip(alist, blist):
+   ....:     print a, b
+   ....:
+   ....:
+a1 b1
+a2 b2
+a3 b3
+a4 b4
+\end{lstlisting}
 \end{frame}
 
 \section{Summary}
