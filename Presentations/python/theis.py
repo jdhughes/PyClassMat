@@ -10,9 +10,9 @@ x, y = np.meshgrid(np.linspace(xmin, xmax, nx), np.linspace(ymin, ymax, ny))
 wells = [ [25, 30, 3], [50, 50, 3], [75, 30, 3] ]
 ddn = np.zeros( x.shape, dtype=float)
 for xw, yw, Qw in wells:
-    print 'processing well: ', xw, yw, Qw
+    print 'Processing Well: x={0}, y={1}, Q={2}'.format(xw, yw, Qw)
     r = np.sqrt((x - xw) ** 2 + (y - yw) ** 2)
-    np.where(r > rw, r, rw)
+    r = np.where(r > rw, r, rw)
     ddn = ddn + theis(Qw, T, S, t, r)
     
 from matplotlib.pyplot import *
