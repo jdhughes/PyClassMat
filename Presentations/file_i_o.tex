@@ -97,7 +97,7 @@ File Input/Output}
 \begin{frame}
   \titlepage
 \end{frame}
-\logo{\vspace{-0.3cm} \includegraphics[width=1.5cm]{figures/c_USGSid1.pdf}\hspace*{11.10cm}}  
+\logo{\vspace{-0.3cm} \includegraphics[width=1.0cm]{figures/c_USGSid1.pdf}\hspace*{11.10cm}}  
 
 \begin{frame}{Outline}
 \tableofcontents
@@ -108,7 +108,8 @@ File Input/Output}
 \begin{itemize}
 
 \item Much of what is useful to do in Python is reading files, manipulating the data, and writing out results in another format
-\item Python and Numpy provide ways to read and write ASCII and binary files. We will focus on ASCII files
+\item Python and Numpy provide ways to read and write ASCII and binary files
+\item We will focus on ASCII files
 \end{itemize}
 \end{frame}
 
@@ -133,8 +134,9 @@ File Input/Output}
 
 \begin{frame}[fragile]
 \frametitle{Writing Strings the Old School Way (\texttt{\%})}
-\begin{small}
+
 \begin{itemize}
+\begin{small}
 \item The general syntax is to make a string with conversion types for variables. For example:
 \begin{lstlisting}
 >>>outstr = 'I have %21.1f kg of %s and %d bins of %s' %(3.99983,'eggs',53,'spam')
@@ -145,14 +147,17 @@ File Input/Output}
 'I have 4.0                   kg of eggs and 053 bins of spam'
 
 \end{lstlisting}
+\pause
 \item The general idea is to make a string including \texttt{'\%'}, a conversion flag (optional), a width and resolution (optional), and a conversion type (required).
 \item[] For example: \newline{}
 \texttt{\%<flag><width>.<resolution><type>}\newline{}\texttt{\%-12.3f} Is a left-justified, floating point value with width of 12 and 3 decimal places.
+\pause
 \item Following the format string must be a list of values as a tuple identified by \texttt{\%}
 
 \item[] \texttt{'\%4d is the \%s\textbackslash{}n' \%(42,'answer')}
-\end{itemize}
 \end{small}
+\end{itemize}
+
 \end{frame}
 
 
@@ -187,6 +192,35 @@ Details about formatted output available at:\newline{}
 \end{frame}
 
 \begin{frame}[fragile]
+\frametitle{Writing Strings the Old School Way (\texttt{\%})}
+Try it out!
+\texttt{'\%4d is the \%s\textbackslash{}n' \%(42,'answer')}\newline{}\texttt{\%<flag><width>.<resolution><type>}
+\begin{itemize}
+\item Conversion flag characters
+\begin{description}
+\Fontvi
+\item [\texttt{'\#'}] Invokes alternate behavior (see website for details)
+\item [\texttt{'0'}] Pads numeric values with zeros
+\item [\texttt{'-'}] Left-adjusts the output
+\item [\texttt{' '}] Leave a space before signed positive values so they line up with negative ones
+
+\end{description}
+\item Most common conversion types. 
+\end{itemize}
+\begin{description}
+\Fontvi
+\item [\texttt{\%d} or \texttt{\%i} ] Signed integer
+\item [\texttt{\%f} or \texttt{\%F} ] Floating point
+\item [\texttt{\%e} or \texttt{\%E} ] Floating point exponential (lower or upper case)
+\item [\texttt{\%g} or \texttt{\%G} ] Combination of \texttt{\%f} and \texttt{\%e} depending on resolution
+\item [\texttt{\%s} or \texttt{\%r} ] String. Width is used, but not resolution
+
+\end{description}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
 \frametitle{Writing Strings the New School Way (\texttt{format})}
 Details about new school string formatting at:\newline{}
 \begin{small}
@@ -213,8 +247,8 @@ The general pattern is \texttt{\{[index]:[format]\}}\newline{}
 \end{frame}
 \section{Text File Reading and Writing}
 \begin{frame}[fragile]
-Now that we can write strings, how about we write them to files? \newline{}
-We should also know how to read stuff back in from files
+Now that we can write strings, we can write them to files \newline{} \\
+But first, We need to read stuff back in \emph{from} files
 \end{frame}
 
 \begin{frame}[fragile]
@@ -238,26 +272,70 @@ The arguments \texttt{'r'} and \texttt{'w'} indicate ``read" and ``write" respec
 \end{frame}
 
 \begin{frame}[fragile]
+\frametitle{\texttt{Readlines} Example}
+\begin{tiny}
+Here's a file called \texttt{example\_file.txt}
+\begin{verbatim}
+This is a file.
+It is a very nice file, no?
+It has several lines.
+Some of them are numbers.
+This is NOT a poem.
+3.14 pi 5
+But code --> now THAT's poetry!
+\end{verbatim}
+
+\pause
+Now let's read it in:
+\begin{lstlisting}
+>>>import os
+>>>infilepath = os.path.join('data','example_file.txt')
+>>>whole_file = open(infilepath,'r').readlines()
+>>> whole_file
+['This is a file.\n', 'It is a very nice file, no?\n', 'It has several lines.\n', 
+'Some of them are numbers.\n', 'This is NOT a poem.\n', '3.14 pi 5\n',
+"But code --> now THAT's poetry!"]
+\end{lstlisting}
+\pause
+What if it's a windows file?
+\begin{lstlisting}
+>>>infilepath = os.path.join('data','example_file_win.txt')
+>>>whole_file = open(infilepath,'r').readlines()
+>>> whole_file
+['This is a file.\r\n', 'It is a very nice file, no?\r\n', 'It has several lines.\r\n', 
+'Some of them are numbers.\r\n', 'This is NOT a poem.\r\n', '3.14 pi 5\r\n',
+"But code --> now THAT's poetry!"]
+\end{lstlisting}
+\end{tiny}
+
+
+
+\end{frame}
+
+\begin{frame}[fragile]
 \frametitle{Parsing input strings}
 \begin{itemize}
 \item Using \texttt{strip} and \texttt{split}
+\begin{itemize} 
+\item \texttt{strip()} removes newline and tab characters from the end 
+
 \begin{lstlisting}
 >>>line = 'USGS        430406089232901 2010-12-03      15.04   P\t\r\n'
 >>>line.strip()
 'USGS\t430406089232901\t2010-12-03\t15.04\tP'
 \end{lstlisting}
-\begin{itemize} 
-\item \texttt{strip()} removes newline and tab characters from the end 
 \end{itemize}
+\pause
+\begin{itemize} 
+\item \texttt{split()} breaks up a string on whitespace 
+\item Can take any character as an argument (usually ',' or '~') 
 \begin{lstlisting}
 >>>line.strip().split()
 ['USGS', '430406089232901', '2010-12-03', '15.04', 'P']
 >>>line.strip().split('0')
 ['USGS\t43', '4', '6', '892329', '1\t2', '1', '-12-', '3\t15.', '4\tP']
 \end{lstlisting}
-\begin{itemize} 
-\item \texttt{split()} breaks up a string on whitespace 
-\item Can take any character as an argument (usually ',' or '~') 
+\pause
 \item Stacking \texttt{strip} and \texttt{split} is a common violation of the general rule not to stack up function calls
 \end{itemize}
 \end{itemize}
@@ -268,8 +346,9 @@ The arguments \texttt{'r'} and \texttt{'w'} indicate ``read" and ``write" respec
 \begin{itemize}
 \item Using \texttt{pop}
 \begin{lstlisting}
->>>>>>line = 'USGS        430406089232901 2010-12-03      15.04   P\t\r\n'
 >>>a=line.strip().split()
+>>>a
+['USGS', '430406089232901', '2010-12-03', '15.04', 'P']
 >>>a.pop()
 'P'
 >>>a
@@ -282,6 +361,7 @@ The arguments \texttt{'r'} and \texttt{'w'} indicate ``read" and ``write" respec
 \begin{itemize} 
 \item \texttt{pop()} \emph{both} returns an element from a list \emph{and} removes it from the remaining list
 \end{itemize}
+\pause
 \item Regular expressions are very flexible but another topic 
 \begin{lstlisting}
 >>>import re
@@ -334,6 +414,43 @@ USGS	430406089232901	2010-12-04	14.92	P
 \begin{frame}[fragile]
 \frametitle{Reading NWIS Output File}
 \begin{lstlisting}
+def NWIS_reader(infile):
+    '''
+    NWIS_reader(infile)
+    A function to read in an NWIS file generated using USGS webservices.
+    Mike Fienen - 7/16/2012
+    <mnfienen *at* usgs *dot* gov>
+    
+    INPUT:
+    infile --> the name of an input file in USGS RDB (tab-delimited) format
+    
+    OUTPUT:
+    indat --> a dictionary with keys corresponding to site numbers and each
+            element being a dictionary with keys date and depth to water.
+    '''
+    # tell the user what's happening
+    print 'Reading Data from file: %s' %(infile)
+    #
+    # set up a couple initial variables
+    #
+    # format for reading the date --> formats noted at 
+    #        http://docs.python.org/library/datetime.html (bottom of the page)
+    indatefmt = "%Y-%m-%d"
+    
+\end{lstlisting}
+\end{frame}
+    
+\begin{frame}[fragile]
+\frametitle{Reading NWIS Output File (Continued)}
+\begin{lstlisting}
+    # open the text file and read all lines into a variable "tmpdat"
+    tmpdat = open(infile,'r').readlines()
+    
+    # make empty lists to temporarily hold the data
+    Site_ID = []   # site ID
+    dates = []     # date of measurement (daily values)
+    DTW = []       # depth to water below land surface (feet)
+    prov_code = [] # provisional code: [P] is provisional, [A] is accepted
     # loop over the input data, keep only proper data rows. Parse and assign to lists
     for lnum, line in enumerate(tmpdat):
         # first read the lookup information from the header of the file
@@ -355,6 +472,45 @@ USGS	430406089232901	2010-12-04	14.92	P
             DTW.append(tmp[3])
             prov_code.append(tmp[4].lower()) # --> note conversion to lower case!
 \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Try Running the Code}
+\begin{small}
+Quick aside on \texttt{os} module...
+\newline{}Windows uses \texttt{"\textbackslash"} for separating path components, but everyone else uses \texttt{"/"} \\
+\begin{columns}[c]
+\column{.4\textwidth}
+
+So, you can make a Windows path as:
+\begin{lstlisting}
+>>>infile = '..\\data\\NWIS_data.dat'
+\end{lstlisting}
+\pause
+\column{0.55\textwidth}
+That works, but only on Windows. Better style is:
+\begin{lstlisting}
+>>>infile = os.path.join('..','data','NWIS_data.dat')
+>>>infile # on a Mac
+'../data/NWIS_data.dat'
+>>>infile # on Windows
+'..\\data\\NWIS_data.dat'
+
+\end{lstlisting}
+\end{columns}
+\begin{center}\emph{That is platform independent}\end{center}
+\pause
+Now, let's try an example in the EXERCISES/FILE\_I\_O directory
+\begin{lstlisting}
+>>> import NWIS_read_parse as NWR, os
+>>> infile = os.path.join('..','data','dane_county_GW_wells.dat')
+>>>indat,county_lookup = NWR.NWIS_reader(infile)
+Reading Data from file: ../data/dane_county_GW_wells.dat
+Reading ../data/dane_county_GW_wells.dat complete!
+>>>indat.keys()
+>>>county_lookup.keys()
+\end{lstlisting}
+\end{small}
 \end{frame}
 
 \begin{frame}[fragile]

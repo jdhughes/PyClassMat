@@ -3,7 +3,7 @@ from datetime import datetime
 import matplotlib as mpl
 mpl.rcParams['pdf.fonttype'] = 42 # this strange bit of code makes fonts 
                                   # editable in Adobe Illustator
-import matplotlib.pyplot as plt   # a violation of namespace kung fu, but a common one
+import matplotlib.pyplot as plt   
 import re                         # regular experessions module
 import os                         # operating system module
 
@@ -145,7 +145,7 @@ def NWIS_reader(infile):
     <mnfienen *at* usgs *dot* gov>
     
     INPUT:
-    infile --> the name of an input file in ZUSGS RDB (tab-delimited) format
+    infile --> the name of an input file in USGS RDB (tab-delimited) format
     
     OUTPUT:
     indat --> a dictionary with keys corresponding to site numbers and each

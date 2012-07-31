@@ -1,0 +1,7 @@
+This is a file.
+It is a very nice file, no?
+It has several lines.
+Some of them are numbers.
+This is NOT a poem.
+3.14 pi 5
+But code --> now THAT's poetry!

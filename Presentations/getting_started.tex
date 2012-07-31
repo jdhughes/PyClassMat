@@ -131,7 +131,7 @@ Getting Started with Python}
 \frametitle{Python Versions and Packages}
 \begin{itemize}
 \item{The two main version branches are 2.x and 3.x}
-\item{We \emph{strongly} recommend sticking with 2.x \newline{}for now--Specifically \bf{2.7.3}}
+\item{We \emph{strongly} recommend sticking with 2.x \newline{}for now--Specifically \bf{2.7.2} or \bf{2.7.3}}
 \item{To do almost any substantial mathematics or statistics, you also need \texttt{numpy}}
 \item{Basic 2-D graphics are possible using \texttt{matplotlib}}
 \item{More advanced statistics are also available using \texttt{scipy}}
@@ -285,7 +285,8 @@ import antigravity
 \pause
 \begin{itemize}
 
-\item These are kind of humorous but (especially) the antigravity example raises an important issue: \newline{}modules not only contain a listing of code and definitions, but can also \emph{execute}!
+\item These are kind of humorous but (especially) the antigravity example raises an important issue: \newline{}
+modules not only contain a listing of code and definitions, but can also \emph{execute}!
 
 \item So, use caution and only load modules from trustworthy sources.
 \end{itemize}
@@ -311,6 +312,7 @@ print ``Hello World!"
 \end{frame}
 
 \section[]{Writing, Editing, and Running Scripts}
+
 \begin{frame}[fragile]
 \frametitle{Composing scripts in a text editor}
 There are a couple important Python idiosyncrasies that influence text editor choice.
@@ -326,12 +328,33 @@ for i in stuff:
 \begin{itemize}
 \item They must be consistent within a script though.
 \end{itemize}
+
+\begin{center}\includegraphics[scale=0.35]{figures/tab_setting.pdf}\end{center}
+
+
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Composing scripts in a text editor}
+There are a couple important Python idiosyncrasies that influence text editor choice.
+\begin{enumerate}
+\item You don't close loops in python, so indentation is paramount!
+\begin{lstlisting}
+for i in stuff:
+     print i
+\end{lstlisting}
+\item Tabs aren't consistent from editor to editor so change them to spaces
+\begin{itemize}
+\item They must be consistent within a script though.
+\end{itemize}
 \item Code highlighting and code folding can be nice
-\pause
 \item An IDE lets you run the code in context and sometimes includes autocomplete and other features.
 
 \end{enumerate}
 \end{frame}
+
 
 \begin{frame}[fragile]
 \frametitle{Some Suggested Environments/Editors}
