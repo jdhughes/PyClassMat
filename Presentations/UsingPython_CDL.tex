@@ -1,0 +1,208 @@
+\documentclass[t]{beamer}
+% \documentclass[handout,xcolor=pdftex,dvipsnames,table]{beamer}
+
+\mode<presentation>
+{
+  \usetheme{Warsaw}
+  \usecolortheme{whale}
+  % or ...
+
+  % or whatever (possibly just delete it)
+  \setbeamertemplate{navigation symbols}{}
+}
+
+\usepackage{hyperref}
+\usepackage{media9}
+
+% make a command to decrease font size locally when desired
+\newcommand\Fontvi{\fontsize{8.5}{7.2}\selectfont}
+
+
+
+\setbeamertemplate{itemize items}[ball]
+\setbeamertemplate{itemize subitem}[triangle]
+\setbeamertemplate{itemize subsubitem}[circle]
+\setbeamercovered{invisible}
+
+\usepackage{palatino} 
+\usepackage{listings} % Gives syntax highlighting for python code. 
+\usepackage{color} % Used for syntax highlighting. 
+\usepackage{textcomp} % Used for syntax highlighting. 
+\usepackage{caption}
+\captionsetup{labelformat=empty,labelsep=none}
+% This gives syntax highlighting in the python environment 
+\definecolor{gray}{gray}{0.5} 
+\definecolor{key}{rgb}{0,0.5,0} 
+\lstset{
+language=python,
+basicstyle=\ttfamily\tiny, 
+otherkeywords={1, 2, 3, 4, 5, 6, 7, 8 ,9 , 0, -, =, +, [, ], (, ), \{, \}, :, *, !}, 
+keywordstyle=\color{blue}, 
+stringstyle=\color{red},
+showstringspaces=false,
+alsoletter={1234567890},
+otherkeywords={\ , \}, \{},
+keywordstyle=\color{blue},
+emph={access,and,break,class,continue,def,del,elif ,else,%
+except,exec,finally,for,from,global,if,import,in,is,%
+lambda,not,or,pass,print,raise,return,try,while},
+emphstyle=\color{black}\bfseries,
+emph={[2]True, False, None, self},
+emphstyle=[2]\color{green},
+emph={[3]from, import, as},
+emphstyle=[3]\color{blue},
+upquote=true,
+morecomment=[s]{"""}{"""},
+commentstyle=\color{gray}\slshape,
+emph={[4]1, 2, 3, 4, 5, 6, 7, 8, 9, 0},
+emphstyle=[4]\color{blue},
+literate=*{:}{{\textcolor{blue}:}}{1}%
+{=}{{\textcolor{blue}=}}{1}%
+{-}{{\textcolor{blue}-}}{1}%
+{+}{{\textcolor{blue}+}}{1}%
+{*}{{\textcolor{blue}*}}{1}%
+{!}{{\textcolor{blue}!}}{1}%
+{(}{{\textcolor{blue}(}}{1}%
+{)}{{\textcolor{blue})}}{1}%
+{[}{{\textcolor{blue}[}}{1}%
+{]}{{\textcolor{blue}]}}{1}%
+{<}{{\textcolor{blue}<}}{1}%
+{>}{{\textcolor{blue}>}}{1},%
+numbers=none,
+}
+
+\newcommand{\putat}[3]{\begin{picture}(0,0)(0,0)\put(#1,#2){#3}\end{picture}}
+
+
+
+\title[]{Python Workshop\\
+ \includegraphics[scale=0.055]{figures/python-app.png}\hspace{5 pt}How we use python\hspace{5 pt}\includegraphics[scale=0.055]{figures/python-app.png} }
+
+\author[Langevin] % (optional, use only with lots of authors)
+{Christian D. ~Langevin}
+\institute[USGS] % (optional, but mostly needed)
+{
+  U.S. Geological Survey\\
+  Reston, Virgina USA
+  }
+  \titlegraphic{\includegraphics[scale=0.5]{figures/c_USGSid1.pdf}}
+  
+
+\date[UQ12] % (optional, should be abbreviation of conference name)
+{USGS National Groundwater Workshop, August 2012}
+
+\subject{Python}
+
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+\logo{\vspace{-0.3cm} \includegraphics[width=1.5cm]{figures/c_USGSid1.pdf}\hspace*{11.10cm}}  
+
+\begin{frame}{How we use python}
+\tableofcontents
+\end{frame}
+
+
+%----------------------------------------- 
+\section{Automate Everything!}
+\subsection{Data Processing}
+
+\begin{frame}[fragile]
+\frametitle{Hydro Time Series}
+  \begin{figure}[ht]
+  \centering
+         \includegraphics[height=7cm]{figures/hydrotimeseries.png}
+   \end{figure}
+\end{frame}
+
+
+\subsection{Figure Generation}
+\begin{frame}[fragile]
+\frametitle{Quickly Plot 2D Information}
+  \begin{figure}[ht]
+  \centering
+         \includegraphics[height=7cm]{figures/hds_concs.png}
+   \end{figure}
+\end{frame}
+
+
+
+%----------------------------------------- 
+\section{Design Models}
+\subsection{Process Input Data}
+
+\begin{frame}[fragile]
+\frametitle{Create Input Files}
+\url{http://code.google.com/p/flopy/}
+  \begin{figure}[ht]
+  \centering
+         \includegraphics[height=6cm]{figures/flopy.png}
+   \end{figure}
+\end{frame}
+
+\subsection{Post Process Results}
+\begin{frame}[fragile]
+\frametitle{Post Processing}
+  \begin{figure}[ht]
+  \centering
+         \includegraphics[height=6cm]{figures/lgr-usg.png}
+   \end{figure}
+\end{frame}
+
+
+%----------------------------------------- 
+\section{Prototype Groundwater Software}
+\subsection{PYFLOW}
+
+\begin{frame}[fragile]
+\frametitle{PYFLOW}
+   \begin{itemize}
+      \item{Simple flow and transport code written in Python using object-oriented design concepts and an unstructured formulation}
+      \item{Flow}
+         \begin{itemize}
+            \item{Density dependent}
+            \item{Ghost node corrections}
+            \item{Common boundary conditions (general head, constant head, specified flow, etc.)}
+         \end{itemize}
+      \item{Transport}
+         \begin{itemize}
+            \item{Advection, dispersion, source/sink}
+            \item{2nd order TVD}
+         \end{itemize}
+      \item{Solver}
+         \begin{itemize}
+            \item{Use scipy.sparse.linalg solvers}
+         \end{itemize}
+   \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Variable-Density Flow}
+  \begin{figure}[ht]
+  \centering
+         \includegraphics[height=6cm]{figures/bedform.png}
+   \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Variable-Density Flow}
+  \begin{figure}[ht]
+  \centering
+         \includegraphics[height=6cm]{figures/bedform.png}
+   \end{figure}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Variable-Density Flow}
+\begin{center}
+\includemedia[
+activate=onclick,width=1.0\textheight]{\includegraphics[height=0.8\textheight]{figures/henry0001.png}}{figures/henry.swf}
+\end{center}
+\end{frame}
+
+
+\end{document}
