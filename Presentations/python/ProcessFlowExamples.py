@@ -1,6 +1,6 @@
 import numpy as np
 #--load flow data
-q = np.genfromtxt( 'USInflow.dat', skip_header=1 )
+q = np.genfromtxt( '..\\data\\ProcessFlow.dat', skip_header=1 )
 #--determine sizes
 ntimes, ncol = q.shape[0], q.shape[1]
 print 'Number of times:   {0:10d}\nNumber of entries: {1:10d}'.format( ntimes, ncol )

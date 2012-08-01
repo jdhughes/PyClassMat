@@ -21,11 +21,11 @@ mpl.rcParams['legend.fontsize']  = 6
 mpl.rcParams['axes.labelsize']   = 8
 mpl.rcParams['xtick.labelsize']  = ticksize
 mpl.rcParams['ytick.labelsize']  = ticksize
-#--problem size
-nlay, nrow, ncol = 1, 41, 40
 #--default data if command line argument not defined for variable
 base_dir, base_name, extension  = '..\\Figures.MF\\', 'MF_Results', 'png'
 head_file = '..\\Results.MF\\CoastalAquifer.hds'
+#--problem size
+nlay, nrow, ncol = 1, 41, 40
 #--coordinate information
 dx, dy = 500., 500.
 xOff, yOff = 0.0, 0.0
