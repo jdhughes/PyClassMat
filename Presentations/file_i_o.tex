@@ -97,7 +97,7 @@ File Input/Output}
 \begin{frame}
   \titlepage
 \end{frame}
-\logo{\vspace{-0.3cm} \includegraphics[width=1.0cm]{figures/c_USGSid1.pdf}\hspace*{11.10cm}}  
+\logo{\vspace{-0.3cm} \includegraphics[width=1.0cm]{figures/c_USGSid1.pdf}\hspace*{11.7cm}}  
 
 \begin{frame}{Outline}
 \tableofcontents
@@ -113,8 +113,8 @@ File Input/Output}
 \end{itemize}
 \end{frame}
 
-
-\section{Reading and Writing Strings}
+\section{Strings}
+\subsection{Reading and Writing Strings}
 
 \begin{frame}[fragile]
 \frametitle{Reading and Writing with Strings}
@@ -242,14 +242,64 @@ The general pattern is \texttt{\{[index]:[format]\}}\newline{}
 \item The \texttt{[index]} argument refers to the item index being mapped in\newline{}
 \item The \texttt{[format]} argument is similar to those in the old school way, but with some additional flexibility
 \end{itemize}
-
 \end{itemize}
 \end{frame}
+
+
+\subsection{Getting User Input}
+\begin{frame}[fragile]
+\frametitle{A Slight Aside on User Input}
+\begin{itemize}
+\item There are two main ways to get user input into a script from the command line
+\begin{enumerate}
+\item Ask the user for it 
+\item Get it from the script call
+\end{enumerate}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Ask the user}
+\begin{itemize}
+\item Asking the user for input
+\begin{lstlisting}
+>>> st = raw_input("What is your favorite color?  ")
+What is your favorite color?  blue, no green!
+>>> st
+'blue, no green!'
+\end{lstlisting}
+\item The input will always be a string which you can parse and convert as you wish.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Parse the call string}
+\begin{itemize}
+\item Arguments in the call string can also be passed
+\begin{lstlisting}
+>>> import sys
+$ python testscript.py arg1 arg2
+>>>scriptname = sys.argv[0]
+>>>arg1 = sys.argv[1]
+>>>arg2 = sys.argv[2]
+...
+\end{lstlisting}
+\item The list returned by \texttt{sys.argv} is all strings 
+\begin{itemize}
+\item 0th argument is the stript name
+\item space-delimited arguments follow from there
+\end{itemize}
+\end{itemize}
+\end{frame}
+
 \section{Text File Reading and Writing}
 \begin{frame}[fragile]
 Now that we can write strings, we can write them to files \newline{} \\
 But first, We need to read stuff back in \emph{from} files
 \end{frame}
+
+
+
 
 \begin{frame}[fragile]
 \frametitle{Interacting with Text Files}
@@ -597,14 +647,42 @@ open(outfilename,'wb').write(datastream)
 \end{frame}
 
 \begin{frame}[fragile]
+\frametitle{Using Stackoverflow}
+\begin{center}\includegraphics[scale=.16]{figures/dl_file_question.pdf}\end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Using Stackoverflow}
+\begin{center}\includegraphics[scale=.2]{figures/dl_file_ans.pdf}\end{center}
+\end{frame}
+
+
+\begin{frame}[fragile]
 \frametitle{Some Useful Resources}
 \begin{itemize}
 
-\item Building queries for RESTful queries of USGS water data \\  \url{http://waterservices.usgs.gov/}
+\item Building queries for RESTful\footnote[1] {REST=Representational State Transfer} queries of USGS water data \\  \url{http://waterservices.usgs.gov/}
 \item USGS Water data type pm code lookup \\
 \url{http://nwis.waterdata.usgs.gov/nwis/pmcodes/}
 \item General I/O information in Python documentation \\ 
 \url{http://docs.python.org/tutorial/inputoutput.html}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Some More Useful Resources}
+\begin{itemize}
+
+\item Getting data through CIDA/ACWI from the National Groundwater monitoring Network (NGWMN) Portal
+\item Main page \\
+\url{http://cida.usgs.gov/gw_data_portal/}
+\item List of wells where data are available \\
+\url{http://cida.usgs.gov/ngwmn/wells} \\
+Hover over a link to see code information
+\item Data are returned in WaterML2 Format \\ 
+\url{http://www.waterml2.org/}
+\item Similar RESTful Query\\
+\url{ http://cida.usgs.gov/ngwmn/data/<agencyCd>/<siteNo>/<data-type>}
 \end{itemize}
 \end{frame}
 
