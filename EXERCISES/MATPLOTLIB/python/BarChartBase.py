@@ -55,8 +55,7 @@ fbot, ftop = 0.10, 0.95
 fig = pl.figure( figsize=(fwid, fhgt), facecolor='w' )
 fig.subplots_adjust(wspace=0.25,hspace=0.25,left=flft,right=frgt,bottom=fbot,top=ftop)
 #--matplotlib date specification
-years    = mdates.YearLocator()   # every year
-months   = mdates.MonthLocator()  # every month
+years, months = mdates.YearLocator(), mdates.MonthLocator()  #every year, every month
 yearsFmt = mdates.DateFormatter('%Y')
 #--define the first subplot
 ax = fig.add_subplot(3,1,1)
@@ -64,11 +63,11 @@ ax = fig.add_subplot(3,1,1)
 ax.plot(pl.date2num(d['date']),d['AirTMin_C'], color='b', linewidth=0.7, label=r'T$_{MIN}$')
 ax.plot(pl.date2num(d['date']),d['AirTMax_C'], color='r', linewidth=0.7, label=r'T$_{MAX}$')
 #--legends and axes
-leg = ax.legend(loc='upper left',ncol=2,labelspacing=0.25,columnspacing=1,handletextpad=0.5,handlelength=2.0,numpoints=1)
+leg = ax.legend(loc='upper left',ncol=2,labelspacing=0.25,columnspacing=1,\
+                handletextpad=0.5,handlelength=2.0,numpoints=1)
 leg._drawFrame=False 
-ax.xaxis.set_major_locator(years)
+ax.xaxis.set_major_locator(years), ax.xaxis.set_minor_locator(months)
 ax.xaxis.set_major_formatter(yearsFmt)
-ax.xaxis.set_minor_locator(months)
 ax.set_xlim(datemin, datemax)
 ax.set_ylabel( r'Temperature $^{\circ}$C' )
 ax.set_ylim(0,45)
@@ -77,33 +76,16 @@ ax = fig.add_subplot(3,1,2)
 #--plot the rainfall data
 ax.bar(pl.date2num(monthly_data[:,0]),monthly_data[:,1]*25.4, \
        color='b', width=monthly_data[:,3], linewidth=0, label='Rainfall')
-ax2 = ax.twinx()
-ax2.plot(pl.date2num(monthly_data[:,0]),np.cumsum( monthly_data[:,1]*25.4/1000. ), color='k' )
 #--axes
-ax.xaxis.set_major_locator(years)
+ax.xaxis.set_major_locator(years), ax.xaxis.set_minor_locator(months)
 ax.xaxis.set_major_formatter(yearsFmt)
-ax.xaxis.set_minor_locator(months)
 ax.set_xlim(datemin, datemax)
 ax.set_ylabel( 'Rainfall mm' )
-ax2.set_ylabel( 'Cumulative Rainfall m' )
 #--define the third subplot
-ax = fig.add_subplot(3,1,3)
-#--plot the potential evapotranspiration data
-ax.bar(pl.date2num(monthly_data[:,0]),monthly_data[:,2], \
-       color='r', width=monthly_data[:,3], linewidth=0, label='Rainfall')
-#--axes
-ax.xaxis.set_major_locator(years)
-ax.xaxis.set_major_formatter(yearsFmt)
-ax.xaxis.set_minor_locator(months)
-ax.set_xlim(datemin, datemax)
-ax.set_xlabel( 'Year' )
-ax.set_ylabel( 'PET mm' )
+#--this is for you to do...
 #--output figure
 #--png
-outfigpng = '..\\figures\\MeterologicBar.png'
+outfigpng = '..\\figures\\Ex2.png'
 fig.savefig(outfigpng,dpi=300)
 print 'created...', outfigpng
-#--pdf
-outfigpdf = '..\\figures\\MeterologicBar.pdf'
-fig.savefig(outfigpdf,dpi=300)
-print 'created...', outfigpdf
+

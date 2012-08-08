@@ -82,9 +82,28 @@ ax.xaxis.set_major_formatter(yearsFmt)
 ax.set_xlim(datemin, datemax)
 ax.set_ylabel( 'Rainfall mm' )
 #--define the third subplot
-#--to do...
+#--this is for you to do...
 #--output figure
 #--png
-outfigpng = '..\\figures\\MeterologicBar.png'
+outfigpng = '..\\figures\\Ex2.png'
 fig.savefig(outfigpng,dpi=300)
 print 'created...', outfigpng
+
+
+#--define the third subplot
+ax = fig.add_subplot(3,1,3)
+#--plot the potential evapotranspiration data
+ax.bar(pl.date2num(monthly_data[:,0]),monthly_data[:,2], \
+       color='r', width=monthly_data[:,3], linewidth=0, label='Rainfall')
+#--axes
+ax.xaxis.set_major_locator(years), ax.xaxis.set_minor_locator(months)
+ax.xaxis.set_major_formatter(yearsFmt)
+ax.set_xlim(datemin, datemax)
+ax.set_xlabel( 'Year' )
+ax.set_ylabel( 'PET mm' )
+
+
+ax2 = ax.twinx()
+ax2.plot(pl.date2num(monthly_data[:,0]),np.cumsum( monthly_data[:,1]*25.4/1000. ), color='k' )
+
+ax2.set_ylabel( 'Cumulative Rainfall m' )
