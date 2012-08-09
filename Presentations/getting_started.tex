@@ -21,6 +21,8 @@
 \usepackage{color} % Used for syntax highlighting. 
 \usepackage{textcomp} % Used for syntax highlighting. 
 \usepackage{caption}
+\usepackage{fancyvrb}
+
 \captionsetup{labelformat=empty,labelsep=none}
 % This gives syntax highlighting in the python environment 
 \definecolor{gray}{gray}{0.5} 
@@ -183,6 +185,40 @@ For other packages, a couple options...
 %%%
 % COMMAND LINE STUFF
 %%%
+
+\begin{frame}[fragile]
+\frametitle{Launching Python: Multiple Versions Issues}
+Three batch files available:\\
+\begin{small}
+\texttt{python.bat}
+\begin{Verbatim}[frame=single]
+path=%path%;C:\Python27
+python.exe
+\end{Verbatim}
+
+\texttt{ipyth.bat}
+\begin{Verbatim}[frame=single]
+path=%path%;C:\Python27
+python.exe C:\Python27\scripts\ipython
+\end{Verbatim}
+
+\texttt{ipyth\_w\_matplotlib.bat}
+\begin{Verbatim}[frame=single]
+path=%path%;C:\Python27
+python.exe C:\Python27\scripts\ipython -pylab
+\end{Verbatim}
+\end{small}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Launching Python: Multiple Versions Issues}
+\begin{itemize}
+\item Double-clicking on a script name in Explorer uses the default Python version.
+\item The default may be hijacked by Arc, etc.
+\item Better to be explicit in which version you are launching
+
+\end{itemize}
+\end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Command Line: Launch and Enter Commands}

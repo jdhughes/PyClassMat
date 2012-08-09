@@ -1,15 +1,4 @@
-'''
-NWIS_web_puller()
-A coad to download an NWIS file using USGS webservices.
-Mike Fienen - 7/16/2012
-<mnfienen *at* usgs *dot* gov>
 
-INPUT:
-none--> user is prompted for all input
-OUTPUT:
-none--> a text file is written by the USGS weservices with a name
-        specified by the user
-'''
 import numpy as np
 from matplotlib import pyplot as plt
 import matplotlib as mpl
@@ -24,7 +13,7 @@ import urllib
 # ############
 
 
-# Function to query NWIS with a list of station numbers
+#--Function to query NWIS with a list of station numbers
 def retrieve_by_stations(cStations,sttime,endtime,outfilename):
     print 'Pulling data for list of stations'
     urlParts = ['http://waterservices.usgs.gov/nwis/dv/?format=rdb,1.0&sites=',
@@ -43,7 +32,7 @@ def retrieve_by_stations(cStations,sttime,endtime,outfilename):
     print 'File download complete'
     print 'output written to %s' %(outfilename)
     
-# Function to query NWIS for all the wells in a State County combination     
+#--Function to query NWIS for all the wells in a State County combination     
 def retrieve_by_state_county(cState,cCounty,sttime,endtime,outfilename,stat_county):
     if stat_county == 'county':
         print 'Pulling data for %s in %s' %(cCounty, cState)
@@ -73,7 +62,21 @@ def retrieve_by_state_county(cState,cCounty,sttime,endtime,outfilename,stat_coun
 # ######## # 
  #  M A I N #
   # ######## # 
+
+#--A driver that asks the user about which data they want to obtain and runs all the functions to get it
 def Web_pull_driver():
+    '''
+    NWIS_web_puller()
+    A coad to download an NWIS file using USGS webservices.
+    Mike Fienen - 7/16/2012
+    <mnfienen *at* usgs *dot* gov>
+    
+    INPUT:
+    none--> user is prompted for all input
+    OUTPUT:
+    none--> a text file is written by the USGS weservices with a name
+    specified by the user
+    '''    
     print 'You are about to enter the NWIS puller zone\nReady?\n\n'
     
     stat_county = raw_input('Would you like to query by Station Numbers [station] \nState [state], or County and State [county]?:')

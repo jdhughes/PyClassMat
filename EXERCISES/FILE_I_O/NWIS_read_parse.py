@@ -8,7 +8,7 @@ import re                         # regular experessions module
 import os                         # operating system module
 
 
-# Function to make a lookup of State and County FIPS codes
+#--Function to make a lookup of State and County FIPS codes
 def read_state_county_FIPS():
     '''
     read_state_county_FIPS()
@@ -74,6 +74,7 @@ def read_state_county_FIPS():
     state_abbrev_full = dict(zip(fullnames,abbrevnames))
     return state_lookup_full,state_lookup_abbrev,county_lookup,state_abbrev_full
 
+#--Function to lookup state and county FIPS codes and associate them with state and county
 def get_county_and_state_FIPS(cState,cCounty,state_lookup_full,
                               state_lookup_abbrev,county_lookup):
     '''
@@ -136,7 +137,7 @@ def get_county_and_state_FIPS(cState,cCounty,state_lookup_full,
     return state_FIPS,county_FIPS
         
         
-
+#--Function to read a file from NWIS query output
 def NWIS_reader(infile):
     '''
     NWIS_reader(infile)
@@ -210,7 +211,8 @@ def NWIS_reader(infile):
     # tell the user we are done!
     print "Reading %s complete!" %(infile)
     return indat,station_lookup
-   
+  
+#--Function to plot hydrographs from an NWIS query using MATPLOTLIB
 def NWIS_plotter(indat,station_lookup,plot_format,disp_plot=False):
     '''
     NWIS_plotter(indat,station_lookup,plot_format,disp_plot)
