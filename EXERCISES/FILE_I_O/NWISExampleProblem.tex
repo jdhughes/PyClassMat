@@ -1,0 +1,260 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+
+\usepackage{graphicx} 
+
+%%% PACKAGES
+\usepackage{booktabs} 
+\usepackage{array} 
+\usepackage{paralist} 
+\usepackage{verbatim} 
+\usepackage{subfig} 
+\usepackage{hyperref}
+\usepackage{fancyvrb}
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
+%%% SECTION TITLE APPEARANCE
+\usepackage{sectsty}
+%%% ToC (table of contents) APPEARANCE
+\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
+\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
+%%% For code listing
+\usepackage{listings} % Gives syntax highlighting for python code. 
+\usepackage{color} % Used for syntax highlighting. 
+\usepackage{textcomp} % Used for syntax highlighting. 
+%%% SETTINGS
+\geometry{letterpaper} 
+\geometry{margin=0.75in}
+\pagestyle{fancy} 
+\renewcommand{\headrulewidth}{0.5pt} 
+\lhead{}\chead{2012 Groundwater Workshop -- NWIS Example Code}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+\allsectionsfont{\sffamily\mdseries\upshape} 
+\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} 
+%\captionsetup{labelformat=empty,labelsep=none}
+% This gives syntax highlighting in the python environment 
+\definecolor{gray}{gray}{0.5} 
+\definecolor{key}{rgb}{0,0.5,0} 
+\lstset{
+basicstyle=\ttfamily\tiny, 
+otherkeywords={ -, =, +, [, ], (, ), \{, \}, :, *, !}, 
+keywordstyle=\color{blue}, 
+stringstyle=\color{red},
+showstringspaces=false,
+alsoletter={1234567890},
+otherkeywords={\ , \}, \{},
+keywordstyle=\color{blue},
+emph={access,and,break,class,continue,def,del,elif ,else,%
+except,exec,finally,for,from,global,if,import,in,is,%
+lambda,not,or,pass,print,raise,return,try,while},
+emphstyle=\color{black}\bfseries,
+emph={[2]True, False, None, self},
+emphstyle=[2]\color{green},
+emph={[3]from, import, as},
+emphstyle=[3]\color{blue},
+upquote=true,
+morecomment=[s]{"""}{"""},
+commentstyle=\color{gray}\slshape,
+emphstyle=[4]\color{blue},
+literate=*{:}{{\textcolor{blue}:}}{1}%
+{=}{{\textcolor{blue}=}}{1}%
+{-}{{\textcolor{blue}-}}{1}%
+{+}{{\textcolor{blue}+}}{1}%
+{*}{{\textcolor{blue}*}}{1}%
+{!}{{\textcolor{blue}!}}{1}%
+{(}{{\textcolor{blue}(}}{1}%
+{)}{{\textcolor{blue})}}{1}%
+{[}{{\textcolor{blue}[}}{1}%
+{]}{{\textcolor{blue}]}}{1}%
+{<}{{\textcolor{blue}<}}{1}%
+{>}{{\textcolor{blue}>}}{1},%
+numbers=none,
+}
+\newcommand{\putat}[3]{\begin{picture}(0,0)(0,0)\put(#1,#2){#3}\end{picture}}
+
+
+\title{2012 USGS National Groundwater Workshop \\ Using \texttt{python} to Improve Groundwater \\ Model Effectiveness: \\ NWIS Example Code}
+\author{}
+\date{August 9, 2012}
+
+\begin{document}
+\maketitle
+
+\section{Getting started}
+This document describes code to pull groundwater level data from NWIS, parse the results, and make simple plots. The objectives of this code are to illustrate a variety of ways to read data from text files, a simple connection to an online database, and plotting the results in an external file. Along the way of developing this code, several tricks are encountered that we hope will be transferable to a variety of situations. 
+
+The remainder of this document shows the code, listed by filename and provides a brief description of the block of code presented with emphasis on tricks.
+
+The intention of this code is to demonstrate concepts from the course, but some assumptions about the data are made and may require further modification to fit specific situations by users, so please do not use this code for important work without QC of the results.
+
+The results of running this code are a text file with all the data requested from NWIS and a series of plots---one per well---showing the hydrograph with approved and provisional data identified. Figure \ref{FigHydro} shows an example hydrograph.
+\begin{figure}
+	\centering
+  	\includegraphics[scale=0.4]{figures/382323104200701.png}
+ 	\caption{Example hydrograph output}
+	\label{FigHydro}
+\end{figure}
+\section{\texttt{NWIS\_read\_driver.py} -- a driver to run the entire codebase}
+This file loads functions from the various modules required to run the entire NWIS query example code. It is often beneficial to have a summary ``driver" code like this to be brief and high level with the details contained in associated modules.
+\subsection{Header}
+The header section imports modules into appropriate namespaces and sets a single user variable called \texttt{testCase}. If \texttt{testCase=1} the code runs through the reading of the two FIPS lookup functions and returns the FIPS codes for Dane County in Wisconsin and prints results to the screen. If \texttt{testCase=2}, the entire code is run including a dialogue to request information from the user.  
+\begin{center}
+	\lstinputlisting[language=python,firstline=1,lastline=5]{NWIS_read_driver.py}
+\end{center}
+\subsection{\texttt{testCase=1}}
+\begin{center}
+	\lstinputlisting[language=python,firstline=7,lastline=21]{NWIS_read_driver.py}
+\end{center}
+\subsection{\texttt{testCase=2}}
+\begin{center}
+	\lstinputlisting[language=python,firstline=22,lastline=34]{NWIS_read_driver.py}
+\end{center}
+
+\section{\texttt{NWIS\_read\_parse.py} -- a set of readers to open and parse files}
+This code contains functions to read several files necessary to perform the NWIS query and to interpret the results obtained by such a query. 
+\subsection{Snippet of an output file from NWIS query}
+In the file listing below, note that comments are generally identified by the ``\#" symbol. However, we need the information about sites found in the line \begin{verbatim}# Data for the following 1 site(s) are contained in this file\end{verbatim}
+After that, the data lines are identified by ``\texttt{USGS}" at the beginning of the line.
+\begin{tiny}
+\begin{Verbatim}[frame=single]
+# ---------------------------------- WARNING ----------------------------------------
+# Provisional data are subject to revision. Go to
+# http://waterdata.usgs.gov/nwis/help/?provisional for more information.
+#
+# File-format description:  http://waterdata.usgs.gov/nwis/?tab_delimited_format_info
+# Automated-retrieval info: http://waterdata.usgs.gov/nwis/?automated_retrieval_info
+#
+# Contact:   gs-w_support_nwisweb@usgs.gov
+# retrieved: 2012-07-24 12:57:18 EDT	(caas01)
+#
+# Data for the following 1 site(s) are contained in this file
+#    USGS 431312089475301 DN-09/06E/29-0083
+# -----------------------------------------------------------------------------------
+#
+# Data provided for site 431312089475301
+#    DD parameter statistic   Description
+#    01   72019     00001     Depth to water level, feet below land surface (Maximum)
+#
+# Data-value qualification codes included in this output:
+#     A  Approved for publication -- Processing and review completed.
+#     P  Provisional data subject to revision.
+#
+agency_cd	site_no	datetime	01_72019_00001	01_72019_00001_cd
+5s	15s	20d	14n	10s
+USGS	431312089475301	1987-01-01	9.82	A
+USGS	431312089475301	1987-01-02	9.84	A
+\end{Verbatim}
+\end{tiny}
+\subsection{Header}
+\begin{center}
+	\lstinputlisting[language=python,firstline=1,lastline=8]{NWIS_read_parse.py}
+\end{center}
+\subsection{\texttt{NWIS\_reader}}
+In this example, we explore the reading and parsing of a text file that has irregular structure. A sidenote is the use of the \texttt{datetime} module for the interpretation and conversion of date and time information. A link to further documentation is included in the comments. 
+
+In the main loop over the input lines, the main logic is to determine whether the key  line identifying the number of stations reported is encountered in the comments, or whether a data line is encountered, as identified by `\texttt{USGS}" at the start of the line. Each line is parsed and then data placed into lists. The lists are later converted into \texttt{numpy} arrays. Note that all string comparisons are made by forcing comparison strings to lower case to avoid misfits based only on text case.
+
+At the end of the code, the results are put into a dictionary to be returned. We use \texttt{np.nonzero} to find indices of an array meeting a specific condition. \texttt{np.where} is another way to do the same.
+\begin{center}
+	\lstinputlisting[language=python,firstline=140,lastline=213]{NWIS_read_parse.py}
+\end{center}
+
+\subsection{\texttt{read\_state\_county\_FIPS}}
+In order to query NWIS using a URL (discussed later), we need FIPS codes (Federal Information Processing Standard) to represent state and county identification. We provide lookup files for both FIPS codes and read them in from files in two different formats requiring two levels of parsing. The county codes are more complicated to read and are performed first. The state codes are read in using \texttt{np.genfromtxt} in its most general way.
+
+Note the use of \texttt{np.hstack}, \texttt{np.reshape}, and \texttt{.T} (the transpose operator) to manipulate a concatenation of three arrays into one for use in lookups.
+
+The dictionaries returned provide the ability to lookup FIPS code by state either using the full state name or the abbreviated state name. Another dictionary allows for finding the abbreviation of a state name using the full name. Finally, \texttt{county\_lookup} is a 3-column \texttt{numpy} array containing state code, county code, and county name. 
+\begin{center}
+	\lstinputlisting[language=python,firstline=11,lastline=75]{NWIS_read_parse.py}
+\end{center}
+
+\subsection{\texttt{get\_county\_and\_state\_FIPS}}
+Once we have made the lookup arrays and dictionaries from reading in the FIPS code files, we must link the FIPS codes to county and state names. This function allows for flexible interpretation of how the user enters county and state names and returns the codes. Note the use of \texttt{zfill} as an alternative way to pad a number with zeros. Note also the use of a \texttt{try} and \texttt{except} block for error trapping. This is not fully explained here, but in general is good practice to handle exceptions rather than relying solely on the interpreter to do so.
+\begin{center}
+	\lstinputlisting[language=python,firstline=77,lastline=137]{NWIS_read_parse.py}
+\end{center}
+
+\subsection{\texttt{NWIS\_plotter}}
+The final step for our code is to plot results of hydrographs using \texttt{matplotlib}. The user provides the data returned by the \texttt{NWIS\_reader} function. The user also specifies the output format for the file to be saved (e.g. .png or .pdf) and a flag determining whether the plots should be displayed to the screen in addition to being saved to disk. In the function call, the use of a default value (\texttt{disp\_plot=False}) makes a variable optional. If the variable is left out of the function call, the default value is used.
+
+Note also the first if statement regarding the subdirectory called figures. This is a common trick to direct output to a subdirectory without requiring the directory to be present already.
+
+The plotting is straightforward, although note the handling of provisional and approved data.
+\begin{center}
+	\lstinputlisting[language=python,firstline=215,lastline=279]{NWIS_read_parse.py}
+\end{center}
+
+\section{\texttt{NWIS\_web\_puller.py} -- a module to construct and retrieve NWIS URLs}
+This code constructs the queries necessary to pull NWIS data from a USGS webservice using RESTful queries. REST stands for Representational State Transfer---what this really means is that a user can create a URL with a few variables defined in line to retrieve data through a web browser. The \texttt{urllib} built-in \texttt{python} module also provides a means to get data from a URL.
+\subsection{Header}
+The only new module being loaded here relative to the other codes is \texttt{urllib}
+\begin{center}
+	\lstinputlisting[language=python,firstline=2,lastline=8]{NWIS_web_puller.py}
+\end{center}
+
+\subsection{\texttt{Web\_pull\_driver} -- a driver to obtain user information and run the other web pulling functions}
+This driver code uses \texttt{raw\_input} to obtain options from the user to obtain NWIS data. Examples of running the code are as follows:
+\begin{tiny}
+\begin{Verbatim}[frame=single]
+>>> import NWIS_web_puller as NWP
+>>> NWP.Web_pull_driver()
+You are about to enter the NWIS puller zone
+Ready?
+
+
+Would you like to query by Station Numbers [station] 
+State [state], or County and State [county]?:state
+Please enter state as full, abbreviated, or FIPS code:Co
+Please enter start date in format "YYYY-MM-DD":1900-01-01
+Please enter end date in format "YYYY-MM-DD":2012-08-01
+Please enter a filename for your results:COtest.dat
+Pulling data for Co
+Using URL:
+http://waterservices.usgs.gov/nwis/dv/?format=rdb&stateCd=Co&startDT=1900-01-01&endDT=2012-08-01&parameterCd=72019&siteType=GW
+File download complete
+output written to COtest.dat
+\end{Verbatim}
+\end{tiny}
+\begin{tiny}
+\begin{Verbatim}[frame=single]
+>>> import NWIS_web_puller as NWP
+>>> NWP.Web_pull_driver()
+You are about to enter the NWIS puller zone
+Ready?
+
+
+Would you like to query by Station Numbers [station] 
+State [state], or County and State [county]?:station
+Please enter 15-digit station codes, separated by commas:372106105241701,372141105281101
+Please enter start date in format "YYYY-MM-DD":1900-01-01
+Please enter end date in format "YYYY-MM-DD":2012-08-01
+Please enter a filename for your results:co_some.dat
+Pulling data for list of stations
+Using URL:
+http://waterservices.usgs.gov/nwis/dv/?format=rdb,1.0&sites=372106105241701,372141105281101&startDT=1900-01-01&endDT=2012-08-01&parameterCd=72019&siteType=GW
+File download complete
+output written to co_some.dat
+\end{Verbatim}
+\end{tiny}
+The code listing is as follows. Note that all input from \texttt{raw\_input} is a string so conversions are required if numerical or other information is required.
+\begin{center}
+	\lstinputlisting[language=python,firstline=62,lastline=106]{NWIS_web_puller.py}
+\end{center}
+
+\subsection{\texttt{retrieve\_by\_state\_county}}
+One option is to pull data by specifying a state and county (or by state only). The behavior is controlled by the variable \texttt{stat\_county}. A list called \texttt{urlParts} contains the various elements of the URL for the RESTful query and the county and state information are placed in the appropriate locations to create a full URL. Pulling the data is as simple as reading the data stream into memory and then writing the results to a file using binary protocol. The binary protocol (signified by \texttt{'wb'} in the output file open statement) works for binary or text files so is the most general solution. It is not really necessary to save to a file---one could leave the data stream in memory instead, but it's often useful to save an archive of exactly what was pulled in the query.
+\begin{center}
+	\lstinputlisting[language=python,firstline=35,lastline=60]{NWIS_web_puller.py}
+\end{center}
+
+\subsection{\texttt{retrieve\_by\_stations}}
+The other option is to pull data by specifying a a set of station IDs, separated by commas. This function works almost the same as \texttt{retrieve\_by\_state\_county} except that the URL is constructed using station IDs.
+\begin{center}
+	\lstinputlisting[language=python,firstline=16,lastline=33]{NWIS_web_puller.py}
+\end{center}
+
+\end{document}

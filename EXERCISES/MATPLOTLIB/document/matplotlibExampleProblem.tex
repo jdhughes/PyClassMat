@@ -77,7 +77,7 @@ numbers=none,
 
 \title{2012 USGS National Groundwater Workshop \\ Using \texttt{python} to Improve Groundwater \\ Model Effectiveness: A \\ \texttt{matplotlib} Example Problems}
 \author{}
-\date{August 9, 2012}
+\date{August 9-10, 2012}
 
 \begin{document}
 \maketitle
@@ -184,7 +184,7 @@ What you are going to be doing is adding a third subplot and plotting monthly PE
 
 After saving and running the revised script the output image should look similar to \textbf{figure~\ref{FigEx2Step1}}.
 
-\begin{figure}[hp]
+\begin{figure}
 	\centering
   	\includegraphics[width=0.75\textwidth]{figures/MeterologicBar_step1.png}
  	\caption{\texttt{matplotlib} exercise 2 figure output with the third subplot.}
@@ -206,7 +206,7 @@ These two lines should be added immediately after the \texttt{ax.bar} command. T
 
 The resulting image should look similar to \textbf{figure~\ref{FigEx2Step2}}
 
-\begin{figure}[hp]
+\begin{figure}
 	\centering
   	\includegraphics[width=0.75\textwidth]{../figures/MeterologicBar.png}
  	\caption{\texttt{matplotlib} exercise 2 figure output with the third subplot and a second axis on the second subplot.}
@@ -220,6 +220,95 @@ Some additional tasks that you can attempt if you have time are changing the col
 A base \texttt{python} script for exercise 3 (\texttt{MODFLOWBase.py}) has been provided. Make a copy of this file so you can backtrack in the event that you make and error and need to start over; a suggested sript name is \texttt{Ex3.py}.
 
 \subsection{Getting started with MODFLOW output}
-Text
+In this exercise we are going to read data from a binary MODFLOW head file (\texttt{data$\backslash$Coastal\-Aquifer.hds}) and plot hydrographs and maps. The \texttt{python$\backslash$MFBinaryClass.py} \texttt{python} script includes functions for reading binary data from MODFLOW head and cell-by-cell files. 
+
+The classes in \texttt{python$\backslash$MFBinaryClass.py} include functionality to extract time series from specific cells and three-dimensional data from MODFLOW files. An example of how to read MODFLOW output data using  \texttt{python$\backslash$MFBinaryClass.py} is listed below. This example is from \texttt{MODFLOWBase.py}.
+
+\begin{center}
+	\lstinputlisting[language=python,firstline=29,lastline=40]{../python/MODFLOWFinal.py}
+\end{center}
+
+The \texttt{python} command \texttt{mfb.MODFLOW\_Head(nlay,nrow,ncol,head\_file)} creates and instance of the MODFLOW\_Head class, initializes the instance, and opens \texttt{data$\backslash$Coastal\-Aquifer.hds}. The method \texttt{get\_gage} extracts the head values from a specified cell number -- layer 1, row 1, column 1 or cell \texttt{1} in this case. The remainder of the example code stores the \texttt{TOTIM} values from \texttt{data$\backslash$Coastal\-Aquifer.hds} in a \texttt{numpy} array.
+
+\subsection{Creating a hydrograph from MODFLOW head output}
+What you are going to be doing is extracting head data at the location of a groundwater withdrawal at layer 1, row 18, column 31, creating a hydrograph, and saving the hydrograph to an image file. The easiest thing to do is copy and paste the code for extracting the \texttt{TOTIM} values from \texttt{data$\backslash$Coastal\-Aquifer.hds} and adding code to plot this data to the bottom of your working script. Your new code should look something like the code listed below.
+
+\begin{center}
+	\lstinputlisting[language=python,firstline=42,lastline=54]{../python/MODFLOWFinal.py}
+\end{center}
+
+The function \texttt{mfb.icrl\_from\_kij(1,18,31,nlay,nrow,ncol)} determines the cell number at layer 1, row 18, column 31. The command \texttt{mf\_times/365.25-100.} within the \texttt{ax.plot()} command converts days to years and shifts the time axis so 0.0 corresponds to the period when groundwater withdrawals start in the model. The x-axis is restrict to only show the period with groundwater withdrawals between shifted time 0 and 50 years. The resulting image should look similar to \textbf{figure~\ref{FigEx3HeadHydrograph}}
+
+\begin{figure}
+	\centering
+  	\includegraphics[width=0.75\textwidth]{../figures.MF/Cell_711.png}
+ 	\caption{\texttt{matplotlib} exercise 3 groundwater head hydrograph for layer 1, row 18, and cell 31.}
+	\label{FigEx3HeadHydrograph}
+\end{figure}
+
+\subsection{Modifying hydrograph output to drawdown}
+Copy and paste the code you developed to create the hydrograph figure at the bottom of your working script. In this case, the initial head can be calculated using \texttt{h0 = t[:,1].max()}. Modify the hydrograph to show drawdown. Your new code should look something like the code listed below.
+
+\begin{center}
+	\lstinputlisting[language=python,firstline=55,lastline=65]{../python/MODFLOWFinal.py}
+\end{center}
+
+The resulting image should look similar to \textbf{figure~\ref{FigEx3DrawdownHydrograph}}
+
+\begin{figure}
+	\centering
+  	\includegraphics[width=0.75\textwidth]{../figures.MF/Cell_711_drawdown.png}
+ 	\caption{\texttt{matplotlib} exercise 3 drawdown hydrograph for layer 1, row 18, and cell 31.}
+	\label{FigEx3DrawdownHydrograph}
+\end{figure}
+
+\subsection{Creating a map from MODFLOW head output within a loop}
+Now we will extract the head data from \texttt{data$\backslash$Coastal\-Aquifer.hds} for each \texttt{TOTIM} values and create a figure within a loop. The approach for extracting three-dimensional head data is similar to the approach used to extract data for an individual cell. The method \texttt{get\_record(findtime)} is used to extract three-dimensional data.
+
+We will be using the \texttt{matplotlib} commands \texttt{pcolor}, \texttt{contour}, and \texttt{clabel} to create the map of the MODFLOW head data. The coordinates at the center and edges of the cells will be needed to correctly plot the data using \texttt{pcolor} and \texttt{contour}. Suggested code for calculating the model coordinates to add to the bottom of your working script is listed below.
+
+\begin{center}
+	\lstinputlisting[language=python,firstline=68,lastline=77]{../python/MODFLOWFinal.py}
+\end{center}
+
+The \texttt{numpy} command \texttt{meshgrid} creates a two-dimensional array of x- and y-coordinates from one-dimensional arrays and are used by \texttt{pcolor} and \texttt{contour}. The \texttt{hd} \texttt{numpy} array will be used to Try to add a loop that extracts the head data and plots the data for each saved MODFLOW time step. A possible approach for coding this is listed below.
+
+\begin{center}
+	\lstinputlisting[language=python,firstline=78,lastline=114]{../python/MODFLOWFinal.py}
+\end{center}
+
+The \texttt{numpy} command \texttt{flipud(hd)} flips the data in the y-direction so it is oriented in a cartesian coordinate system for \texttt{pcolor}. The resulting image after 1 year should look similar to \textbf{figure~\ref{FigEx3HeadMap}}
+
+\begin{figure}
+	\centering
+  	\includegraphics[width=0.75\textwidth]{../figures.MF/Head_36865.png}
+ 	\caption{\texttt{matplotlib} exercise 3 simulated groundwater head after 1 year of groundwater withdrawals using \texttt{pcolor}.}
+	\label{FigEx3HeadMap}
+\end{figure}
+
+Modify your code to use \texttt{imshow} instead of \texttt{pcolor}. You should refer to \url{http://matplotlib.sourceforge.net/api/pyplot_api.html\#matplotlib.pyplot.imshow} for guidance on using  \texttt{imshow}. One thing to note is \texttt{imshow} expects the y-axis for data to be oriented in the same direction as MODFLOW so \texttt{hd} will need to be flipped again. Since \texttt{hd} is also being used to plot the contours, \texttt{hd} should be flipped in the call to \texttt{imshow} or a new variable defined. A possible approach for using \texttt{imshow} is listed below.
+
+\begin{lstlisting}
+
+	hp = ax.imshow(np.flipud(hd),vmin=0,vmax=2,cmap='jet_r',alpha=1.0,extent=[xmin,xmax,ymin,ymax])
+\end{lstlisting}
+
+The resulting image after 1 year using \texttt{imshow} should look similar to \textbf{figure~\ref{FigEx3HeadMap2}}
+
+\begin{figure}
+	\centering
+  	\includegraphics[width=0.75\textwidth]{figures/imshowHead_36865.png}
+ 	\caption{\texttt{matplotlib} exercise 3 simulated groundwater head after 1 year of groundwater withdrawals using \texttt{imshow}.}
+	\label{FigEx3HeadMap2}
+\end{figure}
+
+Evaluate the result of not flipping \texttt{hd}.
+
+\subsection{Additional tasks}
+Some additional tasks that you can attempt if you have time are changing the color map used to create the map and contour levels \textit{etc.} on the maps of hydraulic head. You should refer to \url{http://matplotlib.sourceforge.net/api/pyplot_api.html\#matplotlib.pyplot.pcolor} and \url{http://matplotlib.sourceforge.net/api/pyplot_api.html\#matplotlib.pyplot.contour} for guidance on modifying these (and other) options.
+
+It may be useful to review the additional functionality available in \texttt{python$\backslash$MFBinaryClass.py} for reading binary MODFLOW output.
+
+
 
 \end{document}
